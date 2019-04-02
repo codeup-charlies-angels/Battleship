@@ -1,0 +1,18 @@
+*{
+    box-sizing:border-box;
+}
+#WebContainer{
+    background-color: red;
+    height:500px;
+    width:500px;
+}
+#GameBoard{
+    background-color: red;
+    text-align:center;
+}
+#GameBoard .col{
+    border:1px solid black;
+}
+.row{
+    height:50px;
+}
