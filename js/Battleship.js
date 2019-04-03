@@ -21,13 +21,13 @@ function getOffset(el) {
 //
 //
 class Ship {
-    constructor(id, length, direction) {
-        this.id = id;
+    constructor(length) {
+        this.id = Ship.incrementId();
         this.length = length;
-        this.direction = direction;
-        this.place = function (locationID, dir) {
-            var loc = getOffset(locationID)
-            console.log("Moving " + this.id + " to " + locationID + " " + loc);
+        this.direction = true;
+        this.move = function (locationID, dir) {
+            var loc = getOffset(locationID);
+            console.log("Moving Ship" + this.id + " to " + locationID + " (" + loc.left + ", " + loc.top+")");
             var ship = document.getElementById("Ship" + this.id);
             ship.style.position = "absolute";
             ship.style.top = loc.top + 'px';
@@ -39,13 +39,20 @@ class Ship {
                 ship.style.height = 50 + 'px';
                 ship.style.width = (50 * this.length) + 'px';
             }
+            ship.style.lineHeight=ship.style.height;
         }
-        this.create = function () {
-            var ship = document.createElement("div");   // Create a <button> element
-            ship.id = "Ship" + this.id;
-            ship.className="GamePiece"
-            document.body.appendChild(ship);
-        }
+        // Auto run on create
+        var ship = document.createElement("div");   // Create a <button> element
+        ship.id = "Ship" + this.id;
+        ship.className="GamePiece";
+        ship.textContent=this.id;
+        document.body.appendChild(ship);
+
+    }
+    static incrementId() {
+        if (this.latestId == null) this.latestId = 0;
+        else this.latestId++;
+        return this.latestId;
     }
 }
 
