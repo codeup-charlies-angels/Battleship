@@ -21,12 +21,12 @@ function getOffset(el) {
 //
 //
 class Ship {
-    constructor(id, length, direction) {
-        this.id = id;
+    constructor(length) {
+        this.id = Ship.incrementId();
         this.length = length;
-        this.direction = direction;
+        this.direction = true;
         this.place = function (locationID, dir) {
-            var loc = getOffset(locationID)
+            var loc = getOffset(locationID);
             console.log("Moving " + this.id + " to " + locationID + " " + loc);
             var ship = document.getElementById("Ship" + this.id);
             ship.style.position = "absolute";
@@ -43,9 +43,15 @@ class Ship {
         this.create = function () {
             var ship = document.createElement("div");   // Create a <button> element
             ship.id = "Ship" + this.id;
-            ship.className="GamePiece"
+            ship.className="GamePiece";
+            ship.textContent=this.id;
             document.body.appendChild(ship);
         }
+    }
+    static incrementId() {
+        if (this.latestId == null) this.latestId = 0;
+        else this.latestId++;
+        return this.latestId;
     }
 }
 

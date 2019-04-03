@@ -9,7 +9,7 @@
 .GamePiece{
     z-index:100;
     position:absolute;
-    background-color:blue;
+    background-color:lightgreen;
 }
 #GameBoard{
     background-color: red;
