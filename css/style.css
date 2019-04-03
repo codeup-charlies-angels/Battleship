@@ -1,10 +1,15 @@
 *{
     box-sizing:border-box;
 }
-#WebContainer{
+#GameBoardContainer{
     background-color: red;
     height:500px;
     width:500px;
+}
+.GamePiece{
+    z-index:100;
+    position:absolute;
+    background-color:blue;
 }
 #GameBoard{
     background-color: red;
