@@ -9,9 +9,9 @@ submarine /  1    4
 
 */
 
-
+// global variables. May change to local if not needed globally
 var boardArray = [];
-var p2Ships = ["battleship", "cruiser","cruiser", "destroyer","destroyer","destroyer",]; // may not be needed
+var p2Ships = ["battleship", "cruiser","cruiser", "destroyer","destroyer","destroyer","submarine","submarine","submarine","submarine"]; // may not be needed
 var p2BattleShip = [4,1];   // size, how many times it can be placed.
 var p2Cruiser = [3,2];      // size, how many times it can be placed.
 var p2Destroyer = [2,3];    // size, how many times it can be placed.
@@ -84,4 +84,40 @@ var shipHead;
         return shipHead;
     }
 
+    // ship selector
+    function shipSelector(item) {
+        switch (item) {
+            case "battleship":
+                //console.log(p2BattleShip);
+                return p2BattleShip;
+                break;
+            case "cruiser":
+                //console.log(p2Cruiser);
+                return p2Cruiser;
+                break;
+            case "destroyer":
+               // console.log(p2Destroyer);
+                return p2Destroyer;
+                break;
+            case "submarine":
+               // console.log(p2sub);
+                return p2sub;
+                break;
+            default:
+                console.error("Error at shipSelector" + item);
+                break;
+        }
+    }
+    // below for testing purposes.
+    for (var i = 0; i < p2Ships.length; i++){
+        console.log(p2Ships[i]);
+        console.log(shipSelector(p2Ships[i]));
+    }
+
+    // place ships on the grid and occupy the space. Remove grid points so as not to overlap ships
+    function placeShips() {
+        for (var i = 0; i < p2Ships.length; i++){
+            // todo: fill this stuff in. lol!
+        }
+    }
 
