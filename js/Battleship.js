@@ -3,6 +3,15 @@
 
 //
 //
+// Define Globals
+//
+//
+
+
+
+
+//
+//
 // Useful functions
 //
 //
@@ -30,8 +39,9 @@ class Ship {
         // Auto run on create
         var ship = document.createElement("div");   // Create a <button> element
         ship.id = "Ship" + this.id;
-        ship.className = "GamePiece";
+        ship.className = "GamePiece_Ship";
         ship.textContent = this.id;
+        Ship.playerShips.push(ship);
         document.body.appendChild(ship);
 
     }
@@ -41,17 +51,18 @@ class Ship {
         console.log("Moving Ship" + this.id + " to " + locationID + " (" + loc.left + ", " + loc.top + ")");
         var ship = document.getElementById("Ship" + this.id);
         ship.style.position = "absolute";
-        ship.style.top = loc.top + 'px';
-        ship.style.left = loc.left + 'px';
+        ship.style.top = (loc.top + 1) + 'px';
+        ship.style.left = (loc.left + 1) + 'px';
         if (dir) {
-            ship.style.height = (50 * this.length) + 'px';
-            ship.style.width = 50 + 'px';
+            ship.style.height = ((50 * this.length)-2) + 'px';
+            ship.style.width = 48 + 'px';
         } else {
-            ship.style.height = 50 + 'px';
-            ship.style.width = (50 * this.length) + 'px';
+            ship.style.height = 48 + 'px';
+            ship.style.width = ((50 * this.length)-2) + 'px';
         }
         ship.style.lineHeight = ship.style.height;
     }
+    static playerShips = []
     static incrementId() {
         if (this.latestId == null) this.latestId = 0;
         else this.latestId++;

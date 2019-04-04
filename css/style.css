@@ -3,10 +3,10 @@
 }
 #GameBoardContainer{
     background-color: red;
-    height:500px;
-    width:500px;
+    height:550px;
+    width:550px;
 }
-.GamePiece{
+.GamePiece_Ship{
     z-index:100;
     position:absolute;
     background-color:lightgreen;
@@ -19,6 +19,7 @@
 #GameBoard .col{
     border:1px solid black;
 }
-.row{
+.row, #AlphabetCol .row .col{
+    text-align:center;
     height:50px;
 }
