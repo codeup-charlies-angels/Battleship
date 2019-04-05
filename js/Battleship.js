@@ -8,8 +8,6 @@
 //
 
 
-
-
 //
 //
 // Useful functions
@@ -19,7 +17,8 @@
 function allowDrop(ev) {
     ev.preventDefault();
 }
-function drag(ev,id) {
+function dragStart(ev,id) {
+    ev.dataTransfer.effectAllowed = 'all';
     ev.dataTransfer.setData("id", ev.target.id);
     ev.dataTransfer.setData("shipID", id);
     // Get the location of the mouse within the battleship element.
@@ -29,14 +28,21 @@ function drag(ev,id) {
     let y = ev.clientY - rect.top;
     let j = JSON.stringify([x,y]); // Convert to json string so it can be passed
     ev.dataTransfer.setData("offset", j);
-
+}
+function onDrag(ev,id){
+    if (event.shiftKey) {
+        console.log("Shift pressed");
+        Ship.playerShips[id].rotate();
+    }else{
+        Ship.playerShips[id].rotateKey = false;
+    }
 }
 
 function drop(ev) {
     ev.preventDefault();
     let obj = ev.dataTransfer.getData("shipID");
     let offset = JSON.parse(ev.dataTransfer.getData("offset")); // Convert the offset back from JSON
-    Ship.playerShips[obj].move(ev.target.id,true,offset);
+    Ship.playerShips[obj].move(ev.target.id,undefined,offset);
 }
 
 function getGridLocation(el) {
@@ -69,7 +75,8 @@ class Ship {
         this.length = length;
         this.direction = true;
         this.moved=false;
-
+        this.rotated=false;
+        this.rotateKey = false;
 
         // Auto run on create
         this.element=document.createElement("div");   // Create a <button> element;
@@ -79,14 +86,25 @@ class Ship {
         this.element.textContent = this.id;
         this.element.draggable=true;
         let myID = this.id;
-        this.element.addEventListener('dragstart', function(event){drag(event, myID)}, false);
+        this.element.addEventListener('dragstart', function(event){dragStart(event, myID)}, false);
+        this.element.addEventListener('drag', function(event){onDrag(event, myID)}, false);
         Ship.playerShips.push(this);
         document.body.appendChild(this.element);
 
     }
+    rotate(){
+        //Only rotate once per shift press
+        if (!this.rotateKey) {
+            this.direction = !this.direction;
+            console.log(this.direction);
+            this.rotateKey=true;
+            this.rotated=!this.rotated;
+        }
+    }
     move(locationID, dir,offset) {
         if (offset === undefined){offset=[0,0]} // Set offset to 0,0 if not passed in.
-        this.direction = dir;
+        if (dir !== undefined){this.direction = dir;}
+        this.element.style.transition ="none";
         if (this.direction) {
             this.element.style.height = ((50 * this.length)-2) + 'px';
             this.element.style.width = 48 + 'px';
@@ -100,9 +118,9 @@ class Ship {
             this.element.style.transition ="all 0.1s ease-out";
         }else{
             //Slower fly in on first move of ship from edge of screen.
+            this.element.style.transition ="all 1s ease";
             this.element.style.top = "50%";
             this.element.style.left = "-"+(this.element.style.width);
-            this.element.style.transition ="all 1s ease";
         }
 
         //Convert the offset to 50px intervals
@@ -110,6 +128,11 @@ class Ship {
         offset[0]=Math.floor(offset[0]/50)*50;
         offset[1]=Math.floor(offset[1]/50)*50;
         console.log("After conversion offset: " + offset);
+        if (this.rotated){
+            offset = [offset[1],offset[0]];
+            this.rotated=false;
+            console.log("After rotation offset: " + offset);
+        }
 
         //Set the location of the ship
         let loc = getGridLocation(locationID);
@@ -118,6 +141,7 @@ class Ship {
         this.element.style.left = ((loc.left + 1)- offset[0]) + 'px';
         this.element.style.lineHeight = this.element.style.height;
     }
+
     //Class variable to track all ships
     static playerShips = [];
 
