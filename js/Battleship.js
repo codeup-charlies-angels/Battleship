@@ -1,5 +1,5 @@
 // (function() {
-"use strict"
+"use strict";
 
 //
 //
@@ -20,20 +20,26 @@ function allowDrop(ev) {
     ev.preventDefault();
 }
 function drag(ev,id) {
-    console.log(ev.target.id);
     ev.dataTransfer.setData("id", ev.target.id);
     ev.dataTransfer.setData("shipID", id);
+    // Get the location of the mouse within the battleship element.
+    // We will use this to offset the location of the battleship so you can grab it anywhere to drag it
+    var rect = ev.target.getBoundingClientRect();
+    var x = ev.clientX - rect.left; //x position within the element.
+    var y = ev.clientY - rect.top;
+    var j = JSON.stringify([x,y]); // Convert to json string so it can be passed
+    ev.dataTransfer.setData("offset", j);
+
 }
 
 function drop(ev) {
     ev.preventDefault();
     var obj = ev.dataTransfer.getData("shipID");
-    console.log(ev.target.id);
-    console.log(obj);
-    Ship.playerShips[obj].move(ev.target.id,true);
+    var offset = JSON.parse(ev.dataTransfer.getData("offset")); // Convert the offset back from JSON
+    Ship.playerShips[obj].move(ev.target.id,true,offset);
 }
 
-function getOffset(el) {
+function getGridLocation(el) {
     el = document.getElementById(el);
     const rect = el.getBoundingClientRect();
     return {
@@ -72,7 +78,8 @@ class Ship {
         document.body.appendChild(this.element);
 
     }
-    move(locationID, dir) {
+    move(locationID, dir,offset) {
+        if (offset === undefined){offset=[0,0]}
         this.direction = dir;
         if (this.direction) {
             this.element.style.height = ((50 * this.length)-2) + 'px';
@@ -85,14 +92,17 @@ class Ship {
             this.element.style.transition ="all 0.1s ease";
         }else{
             this.element.style.top = "50%";
-            console.log("-"+(this.element.style.width));
             this.element.style.left = "-"+(this.element.style.width);
             this.element.style.transition ="all 1s ease";
         }
-        var loc = getOffset(locationID);
+        var loc = getGridLocation(locationID);
         this.element.style.position = "absolute";
-        this.element.style.top = (loc.top + 1) + 'px';
-        this.element.style.left = (loc.left + 1) + 'px';
+        console.log("Before conversion offset: " + offset);
+        offset[0]=Math.floor(offset[0]/50)*50;
+        offset[1]=Math.floor(offset[1]/50)*50;
+        console.log("After conversion offset: " + offset);
+        this.element.style.top = ((loc.top + 1)- offset[1]) + 'px';
+        this.element.style.left = ((loc.left + 1)- offset[0]) + 'px';
         this.element.style.lineHeight = this.element.style.height;
     }
     static playerShips = [];
