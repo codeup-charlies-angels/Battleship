@@ -25,6 +25,7 @@ var shipHead;
 
 
 
+
     function arrayBuilder(item, index, array) {
         for (var i = 1; i < 11; i++) {
             var x = (item + i);
@@ -42,34 +43,34 @@ var shipHead;
         switch(random10()){
             case 1:
                 return "A";
-                break;
+
             case 2:
                 return "B";
-                break;
+
             case 3:
                 return "C";
-                break;
+
             case 4:
                 return "D";
-                break;
+
             case 5:
                 return "E";
-                break;
+
             case 6:
                 return "F";
-                break;
+
             case 7:
                 return "G";
-                break;
+
             case 8:
                 return "H";
-                break;
+
             case 9:
                 return "I";
-                break;
+
             case 10:
                 return "J";
-                break;
+
             default:
                 return "A";
         }
@@ -81,34 +82,34 @@ var shipHead;
     switch(y){
         case 1:
             return "A";
-            break;
+
         case 2:
             return "B";
-            break;
+
         case 3:
             return "C";
-            break;
+
         case 4:
             return "D";
-            break;
+
         case 5:
             return "E";
-            break;
+
         case 6:
             return "F";
-            break;
+
         case 7:
             return "G";
-            break;
+
         case 8:
             return "H";
-            break;
+
         case 9:
             return "I";
-            break;
+
         case 10:
             return "J";
-            break;
+
         default:
             return "A";
     }
@@ -121,34 +122,34 @@ var shipHead;
         switch(y){
             case "A":
                 return 1;
-                break;
+
             case "B":
                 return 2;
-                break;
+
             case "C":
                 return 3;
-                break;
+
             case "D":
                 return 4;
-                break;
+
             case "E":
                 return 5;
-                break;
+
             case "F":
                 return 6;
-                break;
+
             case "G":
                 return 7;
-                break;
+
             case "H":
                 return 8;
-                break;
+
             case "I":
                 return 9;
-                break;
+
             case "J":
                 return 10;
-                break;
+
             default:
                 return 1;
     }
@@ -169,19 +170,19 @@ var shipHead;
             case "battleship":
                 //console.log(p2BattleShip);
                 return p2BattleShip;
-                break;
+
             case "cruiser":
                 //console.log(p2Cruiser);
                 return p2Cruiser;
-                break;
+
             case "destroyer":
                // console.log(p2Destroyer);
                 return p2Destroyer;
-                break;
+
             case "submarine":
                // console.log(p2sub);
                 return p2sub;
-                break;
+
             default:
                 console.error("Error at shipSelector" + item);
                 break;
@@ -193,6 +194,25 @@ var shipHead;
     //     console.log(p2Ships[i]);
     //     console.log(shipSelector(p2Ships[i]));
     // }
+
+    // test placement array against board array where arr is the placement array
+    function testBrdArr(arr) {
+        for(var i = 0; i < arr.length; i++){
+            // check each arr element to see if its in board array
+            if(boardArray.includes(arr[i])){
+                console.log(i);
+            }else{
+
+                return false;
+            }
+
+        }
+        return true;
+    }
+
+    function remElFromArr(item){
+        delete boardArray[boardArray.indexOf(ite)];
+    }
 
     // find grids for ship to be placed horizontally.
     function placeHorz(blx) {
@@ -213,6 +233,12 @@ var shipHead;
             x++;
             console.log(y+x);
             coordArr.push(y+x);                     // adding new coordinate to coord array to check against main coordinates array
+        }
+        // if true remove the coords from the array. else return false;
+        if (testBrdArr(coordArr)){
+            coordArr.forEach(remElFromArr(boardArray));
+        }else {
+            return false;
         }
     }
 
