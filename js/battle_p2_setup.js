@@ -75,6 +75,85 @@ var shipHead;
         }
     }
 
+    // changes num to alpha
+    function rowNumToAlpha(y) {
+    //change random int to a corresponding letter
+    switch(y){
+        case 1:
+            return "A";
+            break;
+        case 2:
+            return "B";
+            break;
+        case 3:
+            return "C";
+            break;
+        case 4:
+            return "D";
+            break;
+        case 5:
+            return "E";
+            break;
+        case 6:
+            return "F";
+            break;
+        case 7:
+            return "G";
+            break;
+        case 8:
+            return "H";
+            break;
+        case 9:
+            return "I";
+            break;
+        case 10:
+            return "J";
+            break;
+        default:
+            return "A";
+    }
+}
+
+    // changes row alpha to numeric equivalent. lol is this redundant? I don't know how else I would do this.
+
+    function rowAlphaToNum(y) {
+    //change alpha to a corresponding number
+        switch(y){
+            case "A":
+                return 1;
+                break;
+            case "B":
+                return 2;
+                break;
+            case "C":
+                return 3;
+                break;
+            case "D":
+                return 4;
+                break;
+            case "E":
+                return 5;
+                break;
+            case "F":
+                return 6;
+                break;
+            case "G":
+                return 7;
+                break;
+            case "H":
+                return 8;
+                break;
+            case "I":
+                return 9;
+                break;
+            case "J":
+                return 10;
+                break;
+            default:
+                return 1;
+    }
+}
+
 
     // find random coordinates for the head of the ship
     function randoCoordinate() {
@@ -108,16 +187,40 @@ var shipHead;
                 break;
         }
     }
+
     // below for testing purposes.
-    for (var i = 0; i < p2Ships.length; i++){
-        console.log(p2Ships[i]);
-        console.log(shipSelector(p2Ships[i]));
+    // for (var i = 0; i < p2Ships.length; i++){
+    //     console.log(p2Ships[i]);
+    //     console.log(shipSelector(p2Ships[i]));
+    // }
+
+    // find grids for ship to be placed horizontally.
+    function placeHorz(blx) {
+        var head = randoCoordinate();               // locate the head of the ship
+        console.log(head);
+        var y = (head.charAt(0));   // stores the y coordinate (alpha)
+        console.log(y);
+        var x = +(head.charAt(1) + head.charAt(2));        // stores the x coordiante (numeric)
+        console.log(x);
+        var coordArr = [];
+
+        if ((x+blx)>10){               // if ship size + x value > 10, subtract size from x value.
+            console.log("valye of ex befor operation: " + (x+blx));        // debug data, comment out when not needed.
+            x = 10 - blx;
+            console.log("Value of x after operation: " + x);             // debug data, comment out when not needed.
+        }
+        for(var i = 0; i < blx ; i++){              // check to make sure all the necessery coordinates are present in board array
+            x++;
+            console.log(y+x);
+            coordArr.push(y+x);                     // adding new coordinate to coord array to check against main coordinates array
+        }
     }
 
     // place ships on the grid and occupy the space. Remove grid points so as not to overlap ships
     function placeShips() {
         for (var i = 0; i < p2Ships.length; i++){
-            // todo: fill this stuff in. lol!
+            // todo: fill this stuff in. lol
+
         }
     }
 
