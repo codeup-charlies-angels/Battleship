@@ -8,12 +8,79 @@
 //
 let gameBoardSizeX=10;
 let gameBoardSizeY=10;
+let gameScale=50;
+let rect;
+let gbLeft;
+let gbTop;
 
+
+let active = false;
+let currentX = undefined;
+let currentY = undefined;
+let initialX = undefined;
+let initialY = undefined;
+let xOffset = 0;
+let yOffset = 0;
+
+let GameBoard;
+let GameBoardContainer;
+let gameBoardArray=createArray(gameBoardSizeX+1,gameBoardSizeY+1);
 //
 //
 // Useful functions
 //
 //
+
+function dragStart(e) {
+    let curLoc = getLocation(e.target);
+    xOffset = curLoc.left;
+    yOffset = curLoc.top;
+    if (e.type === "touchstart") {
+        initialX = e.touches[0].clientX - xOffset;
+        initialY = e.touches[0].clientY - yOffset;
+    } else {
+        initialX = e.clientX - xOffset;
+        initialY = e.clientY - yOffset;
+    }
+
+    if (e.target === Ship.dragItem) {
+        active = true;
+    }
+}
+
+function dragEnd(e) {
+    initialX = currentX;
+    initialY = currentY;
+
+    active = false;
+}
+
+function drag(e) {
+    if (active) {
+
+        e.preventDefault();
+
+        if (e.type === "touchmove") {
+            currentX = e.touches[0].clientX - initialX;
+            currentY = e.touches[0].clientY - initialY;
+        } else {
+            currentX = e.clientX - initialX;
+            currentY = e.clientY - initialY;
+        }
+
+        xOffset = currentX;
+        yOffset = currentY;
+        //console.log(currentX + ", " + currentY);
+        setTranslate(currentX, currentY, Ship.dragItem);
+    }
+}
+
+function setTranslate(xPos, yPos, el) {
+    el.style.position="absolute";
+    el.style.left=xPos+"px";
+    el.style.top=yPos+"px";
+    //el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+}
 
 function createArray(length) {
     let arr = new Array(length || 0),
@@ -28,8 +95,10 @@ function createArray(length) {
 }
 
 
-function getGridLocation(el) {
-    el = document.getElementById(el);
+function getLocation(el) {
+    if (typeof el !== "object"){
+        el = document.getElementById(el);
+    }
     const rect = el.getBoundingClientRect();
     return {
         left: rect.left + window.scrollX,
@@ -37,13 +106,38 @@ function getGridLocation(el) {
     };
 }
 
+function resizeEverything(){
+
+    gameScale = ((window.innerHeight/15));
+    // gameScale=50;
+
+    GameBoard.style.width=(gameBoardSizeX+1)*gameScale+"px";
+    GameBoard.style.height=(gameBoardSizeY+1)*gameScale+"px";
+
+    rect = GameBoard.getBoundingClientRect();
+    gbLeft = rect.left + window.scrollX;
+    gbTop = rect.top + window.scrollY;
+
+    for(let x=0;x<gameBoardSizeX+1;x++){
+        for (let y=0;y<gameBoardSizeY+1;y++){
+            let gridBox = gameBoardArray[y][x];
+            gridBox.style.top = gbTop + ((x) * gameScale) + "px";
+            gridBox.style.left = gbLeft + ((y) * gameScale) + "px";
+            gridBox.style.width=gameScale+"px";
+            gridBox.style.height=gameScale+"px";
+        }
+    }
+    for(let i=0;i<Ship.playerShips.length;i++){
+        let ship = Ship.playerShips[i];
+        ship.move(ship.lastLocation);
+    }
+}
+
 //
 //
 // Game Building Functions
 //
 //
-let GameBoard;
-let gameBoardArray=createArray(gameBoardSizeX,gameBoardSizeY);
 
 function initializeGameBoard(){
     document.documentElement.style.setProperty('--gameBoardSizeX', (gameBoardSizeX+1).toString());
@@ -52,38 +146,42 @@ function initializeGameBoard(){
     // Create the gameBoard div
     GameBoard=document.createElement("div");   // Create a <button> element;
     GameBoard.id = "GameBoard";
-    document.getElementById("GameBoardContainer").appendChild(GameBoard);
+    GameBoardContainer=document.getElementById("GameBoardContainer");
+    GameBoardContainer.appendChild(GameBoard);
 
-    const rect = GameBoard.getBoundingClientRect();
-    let gbLeft = rect.left + window.scrollX;
-    let gbTop = rect.top + window.scrollY;
+    rect = GameBoard.getBoundingClientRect();
+    gbLeft = rect.left + window.scrollX;
+    gbTop = rect.top + window.scrollY;
+    GameBoard.style.width=(gameBoardSizeX+1)*gameScale+"px";
+    GameBoard.style.height=(gameBoardSizeY+1)*gameScale+"px";
+
+
+    GameBoardContainer.addEventListener('mousedown', function(event){dragStart(event)}, false);
+    GameBoardContainer.addEventListener('mouseup', function(event){dragEnd(event)}, false);
+    GameBoardContainer.addEventListener('mousemove', function(event){drag(event)}, false);
+
+    GameBoardContainer.addEventListener('touchstart', function(event){dragStart(event)}, false);
+    GameBoardContainer.addEventListener('touchend', function(event){dragEnd(event)}, false);
+    GameBoardContainer.addEventListener('touchmove', function(event){drag(event)}, false);
+
 
     for(let x=0;x<gameBoardSizeX+1;x++){
         for (let y=0;y<gameBoardSizeY+1;y++){
             let gridBox = document.createElement("div");
-            gridBox.style.top = gbTop + ((x) * 50) + "px";
-            gridBox.style.left = gbLeft + ((y) * 50) + "px";
+            gridBox.style.width = gameScale+"px";
+            gridBox.style.height = gameScale+"px";
             if (y===0 || x===0){
                 gridBox.className = "organizerGridBox";
             }else {
                 gridBox.id = "" + String.fromCharCode(x + 64) + y;
                 gridBox.className = "gameGridBox";
-                gameBoardArray[y-1][x-1] = gridBox;
             }
+            gameBoardArray[y][x] = gridBox;
             document.getElementById("GameBoard").appendChild(gridBox);
         }
     }
+    resizeEverything();
 }
-
-initializeGameBoard();
-
-//Add drag and drop listeners on all the grid boxes
-let grid = document.getElementsByClassName("gridbox");
-for(let i=0;i<grid.length;i++){
-    grid[i].addEventListener('drop', function(event){drop(event)}, false);
-    grid[i].addEventListener('dragover', function(event){allowDrop(event)}, false);
-}
-
 
 class Ship {
     constructor(length) {
@@ -92,8 +190,6 @@ class Ship {
         this.direction = true;
         this.moved=false;
         this.lastLocation=null;
-        this.rotated=false;
-        this.rotateKey = false;
         this.grabOffset=[0,0];
         // Auto run on create
         this.element=document.createElement("div");   // Create a <button> element;
@@ -101,22 +197,15 @@ class Ship {
         this.element.id = "Ship" + this.id;
         this.element.className = "GamePiece_Ship";
         this.element.textContent = this.id;
-        let myID = this.id;
-        this.element.addEventListener('click', function(event){this(event, myID)}, false);
+        let me=this;
+        this.element.addEventListener('mousedown', function(event){Ship.dragItem=event.target}, false);
+        this.element.addEventListener('mouseup', function(event){Ship.dragItem;}, false);
+        this.element.addEventListener('touchstart', function(event){Ship.dragItem=event.target}, false);
+        this.element.addEventListener('touchend', function(event){Ship.dragItem;}, false);
         Ship.playerShips.push(this);
-        document.body.appendChild(this.element);
+        GameBoardContainer.appendChild(this.element);
+    }
 
-    }
-    rotate(){
-        //Only rotate once per shift press
-        if (!this.rotateKey) {
-            this.direction = !this.direction;
-            console.log(this.direction);
-            this.rotateKey=true;
-            this.rotated=!this.rotated;
-            this.move(undefined,undefined,this.grabOffset);
-        }
-    }
     move(locationID, dir,offset) {
         if (offset === undefined){offset=[0,0]} // Set offset to 0,0 if not passed in.
         if (dir !== undefined){this.direction = dir;}
@@ -124,27 +213,27 @@ class Ship {
         this.lastLocation = locationID;
         this.element.style.transition ="none";
         if (this.direction) {
-            this.element.style.height = ((50 * this.length)-2) + 'px';
-            this.element.style.width = 48 + 'px';
+            this.element.style.height = ((gameScale * this.length)-2) + 'px';
+            this.element.style.width = (gameScale-2) + 'px';
         } else {
-            this.element.style.height = 48 + 'px';
-            this.element.style.width = ((50 * this.length)-2) + 'px';
+            this.element.style.height = (gameScale-2) + 'px';
+            this.element.style.width = ((gameScale * this.length)-2) + 'px';
         }
 
         if (this.moved){
             //All moves after the first will be fast
-            this.element.style.transition ="all 0.1s ease-out";
+            //this.element.style.transition ="all 0.1s ease-out";
         }else{
             //Slower fly in on first move of ship from edge of screen.
-            this.element.style.transition ="all 1s ease";
+            //this.element.style.transition ="all 1s ease";
             this.element.style.top = "50%";
             this.element.style.left = "-"+(this.element.style.width);
         }
 
-        //Convert the offset to 50px intervals
+        //Convert the offset to gameScale intervals
         console.log("Before conversion offset: " + offset);
-        offset[0]=Math.floor(offset[0]/50)*50;
-        offset[1]=Math.floor(offset[1]/50)*50;
+        offset[0]=Math.floor(offset[0]/gameScale)*gameScale;
+        offset[1]=Math.floor(offset[1]/gameScale)*gameScale;
         console.log("After conversion offset: " + offset);
         if (this.rotated){
             offset = [offset[1],offset[0]];
@@ -153,7 +242,7 @@ class Ship {
         }
 
         //Set the location of the ship
-        let loc = getGridLocation(locationID);
+        let loc = getLocation(locationID);
         this.element.style.position = "absolute";
         this.element.style.top = ((loc.top + 1)- offset[1]) + 'px';
         this.element.style.left = ((loc.left + 1)- offset[0]) + 'px';
@@ -162,6 +251,7 @@ class Ship {
 
     //Class variable to track all ships
     static playerShips = [];
+    static dragItem;
 
     //Auto generate an ID for the ship
     static incrementId() {
@@ -170,6 +260,10 @@ class Ship {
         return this.latestId;
     }
 }
+
+
+
+initializeGameBoard();
 
 
 //Create the 5 random ships of varying sizes

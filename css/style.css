@@ -13,13 +13,12 @@ body{
 #GameBoardContainer {
     display: table-cell;
     vertical-align: middle;
+    touch-action: none;
 }
 
 #GameBoard {
     margin-left: auto;
     margin-right: auto;
-    width: calc(var(--gameBoardSizeX)*50px);
-    height: calc(var(--gameBoardSizeY)*50px);
     background-color: red;
     /*whatever width you want*/
 }
@@ -28,13 +27,13 @@ body{
     position:absolute;
     background-color:lightgreen;
     text-align:center;
-    transition:all 0.5s ease;
+    touch-action: none;
+    user-select: none;
+    /*transition:all 0.5s ease;*/
 }
 .gameGridBox, .organizerGridBox{
     position:absolute;
     z-index: 1;
-    height:50px;
-    width:50px;
     border:1px solid black;
 }
 .gameGridBox{
