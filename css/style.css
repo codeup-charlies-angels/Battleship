@@ -1,10 +1,27 @@
 *{
     box-sizing:border-box;
 }
-#GameBoardContainer{
+body{
+    display: table;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+#GameBoardContainer {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#GameBoard {
+    margin-left: auto;
+    margin-right: auto;
+    width: calc(var(--gameBoardSizeX)*50px);
+    height: calc(var(--gameBoardSizeY)*50px);
     background-color: red;
-    height:550px;
-    width:550px;
+    /*whatever width you want*/
 }
 .GamePiece_Ship{
     z-index:100;
@@ -13,14 +30,16 @@
     text-align:center;
     transition:all 0.5s ease;
 }
-#GameBoard{
-    background-color: red;
-    text-align:center;
-}
-#GameBoard .col{
+.gameGridBox, .organizerGridBox{
+    position:absolute;
+    z-index: 1;
+    height:50px;
+    width:50px;
     border:1px solid black;
 }
-.row, #AlphabetCol .row .col{
-    text-align:center;
-    height:50px;
+.gameGridBox{
+    background-color:royalblue;
+}
+.organizerGridBox{
+    background-color: greenyellow;
 }

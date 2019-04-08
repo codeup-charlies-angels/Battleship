@@ -6,7 +6,8 @@
 // Define Globals
 //
 //
-
+let gameBoardSizeX=10;
+let gameBoardSizeY=10;
 
 //
 //
@@ -14,36 +15,18 @@
 //
 //
 
-function allowDrop(ev) {
-    ev.preventDefault();
-}
-function dragStart(ev,id) {
-    ev.dataTransfer.effectAllowed = 'all';
-    ev.dataTransfer.setData("id", ev.target.id);
-    ev.dataTransfer.setData("shipID", id);
-    // Get the location of the mouse within the battleship element.
-    // We will use this to offset the location of the battleship so you can grab it anywhere to drag it
-    let rect = ev.target.getBoundingClientRect();
-    let x = ev.clientX - rect.left; //x position within the element.
-    let y = ev.clientY - rect.top;
-    let j = JSON.stringify([x,y]); // Convert to json string so it can be passed
-    ev.dataTransfer.setData("offset", j);
-}
-function onDrag(ev,id){
-    if (event.shiftKey) {
-        console.log("Shift pressed");
-        Ship.playerShips[id].rotate();
-    }else{
-        Ship.playerShips[id].rotateKey = false;
+function createArray(length) {
+    let arr = new Array(length || 0),
+        i = length;
+
+    if (arguments.length > 1) {
+        let args = Array.prototype.slice.call(arguments, 1);
+        while(i--) arr[length-1 - i] = createArray.apply(this, args);
     }
+
+    return arr;
 }
 
-function drop(ev) {
-    ev.preventDefault();
-    let obj = ev.dataTransfer.getData("shipID");
-    let offset = JSON.parse(ev.dataTransfer.getData("offset")); // Convert the offset back from JSON
-    Ship.playerShips[obj].move(ev.target.id,undefined,offset);
-}
 
 function getGridLocation(el) {
     el = document.getElementById(el);
@@ -54,12 +37,45 @@ function getGridLocation(el) {
     };
 }
 
-
 //
 //
 // Game Building Functions
 //
 //
+let GameBoard;
+let gameBoardArray=createArray(gameBoardSizeX,gameBoardSizeY);
+
+function initializeGameBoard(){
+    document.documentElement.style.setProperty('--gameBoardSizeX', (gameBoardSizeX+1).toString());
+    document.documentElement.style.setProperty('--gameBoardSizeY', (gameBoardSizeY+1).toString());
+
+    // Create the gameBoard div
+    GameBoard=document.createElement("div");   // Create a <button> element;
+    GameBoard.id = "GameBoard";
+    document.getElementById("GameBoardContainer").appendChild(GameBoard);
+
+    const rect = GameBoard.getBoundingClientRect();
+    let gbLeft = rect.left + window.scrollX;
+    let gbTop = rect.top + window.scrollY;
+
+    for(let x=0;x<gameBoardSizeX+1;x++){
+        for (let y=0;y<gameBoardSizeY+1;y++){
+            let gridBox = document.createElement("div");
+            gridBox.style.top = gbTop + ((x) * 50) + "px";
+            gridBox.style.left = gbLeft + ((y) * 50) + "px";
+            if (y===0 || x===0){
+                gridBox.className = "organizerGridBox";
+            }else {
+                gridBox.id = "" + String.fromCharCode(x + 64) + y;
+                gridBox.className = "gameGridBox";
+                gameBoardArray[y-1][x-1] = gridBox;
+            }
+            document.getElementById("GameBoard").appendChild(gridBox);
+        }
+    }
+}
+
+initializeGameBoard();
 
 //Add drag and drop listeners on all the grid boxes
 let grid = document.getElementsByClassName("gridbox");
@@ -75,19 +91,18 @@ class Ship {
         this.length = length;
         this.direction = true;
         this.moved=false;
+        this.lastLocation=null;
         this.rotated=false;
         this.rotateKey = false;
-
+        this.grabOffset=[0,0];
         // Auto run on create
         this.element=document.createElement("div");   // Create a <button> element;
 
         this.element.id = "Ship" + this.id;
         this.element.className = "GamePiece_Ship";
         this.element.textContent = this.id;
-        this.element.draggable=true;
         let myID = this.id;
-        this.element.addEventListener('dragstart', function(event){dragStart(event, myID)}, false);
-        this.element.addEventListener('drag', function(event){onDrag(event, myID)}, false);
+        this.element.addEventListener('click', function(event){this(event, myID)}, false);
         Ship.playerShips.push(this);
         document.body.appendChild(this.element);
 
@@ -99,11 +114,14 @@ class Ship {
             console.log(this.direction);
             this.rotateKey=true;
             this.rotated=!this.rotated;
+            this.move(undefined,undefined,this.grabOffset);
         }
     }
     move(locationID, dir,offset) {
         if (offset === undefined){offset=[0,0]} // Set offset to 0,0 if not passed in.
         if (dir !== undefined){this.direction = dir;}
+        if (locationID ===undefined){locationID = this.lastLocation}
+        this.lastLocation = locationID;
         this.element.style.transition ="none";
         if (this.direction) {
             this.element.style.height = ((50 * this.length)-2) + 'px';
