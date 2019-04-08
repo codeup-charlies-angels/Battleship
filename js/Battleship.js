@@ -6,8 +6,8 @@
 // Define Globals
 //
 //
-let gameBoardSizeX=15;
-let gameBoardSizeY=15;
+let gameBoardSizeX=10;
+let gameBoardSizeY=10;
 let gameScale=50;
 let rect;
 let gbLeft;
@@ -200,8 +200,8 @@ class Ship {
                 Ship.dragItem=undefined;
 
                 let drect = me.element.getBoundingClientRect();
-                let x = event.clientX - drect.left; //x position within the element.
-                let y = event.clientY - drect.top;
+                let x = event.clientX - drect.left-(gameScale/2); //x position within the element.
+                let y = event.clientY - drect.top -(gameScale/2);
 
                 me.element.style.visibility="hidden";
                 me.move(document.elementFromPoint(event.clientX - x,event.clientY-y));
@@ -217,23 +217,12 @@ class Ship {
         if (dir !== undefined){this.direction = dir;}
         if (locationID ===undefined){locationID = this.lastLocation}
         this.lastLocation = locationID;
-        this.element.style.transition ="none";
         if (this.direction) {
             this.element.style.height = ((gameScale * this.length)-2) + 'px';
             this.element.style.width = (gameScale-2) + 'px';
         } else {
             this.element.style.height = (gameScale-2) + 'px';
             this.element.style.width = ((gameScale * this.length)-2) + 'px';
-        }
-
-        if (this.moved){
-            //All moves after the first will be fast
-            //this.element.style.transition ="all 0.1s ease-out";
-        }else{
-            //Slower fly in on first move of ship from edge of screen.
-            //this.element.style.transition ="all 1s ease";
-            this.element.style.top = "50%";
-            this.element.style.left = "-"+(this.element.style.width);
         }
 
         //Convert the offset to gameScale intervals
