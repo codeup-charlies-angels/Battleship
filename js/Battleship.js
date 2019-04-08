@@ -6,8 +6,8 @@
 // Define Globals
 //
 //
-let gameBoardSizeX=10;
-let gameBoardSizeY=10;
+let gameBoardSizeX=15;
+let gameBoardSizeY=15;
 let gameScale=50;
 let rect;
 let gbLeft;
@@ -118,11 +118,11 @@ function resizeEverything(){
     gbLeft = rect.left + window.scrollX;
     gbTop = rect.top + window.scrollY;
 
-    for(let x=0;x<gameBoardSizeX+1;x++){
-        for (let y=0;y<gameBoardSizeY+1;y++){
-            let gridBox = gameBoardArray[y][x];
-            gridBox.style.top = gbTop + ((x) * gameScale) + "px";
-            gridBox.style.left = gbLeft + ((y) * gameScale) + "px";
+    for(let y=0;y<gameBoardSizeY+1;y++){
+        for (let x=0;x<gameBoardSizeX+1;x++){
+            let gridBox = gameBoardArray[x][y];
+            gridBox.style.top = gbTop + ((y) * gameScale) + "px";
+            gridBox.style.left = gbLeft + ((x) * gameScale) + "px";
             gridBox.style.width=gameScale+"px";
             gridBox.style.height=gameScale+"px";
         }
@@ -140,9 +140,6 @@ function resizeEverything(){
 //
 
 function initializeGameBoard(){
-    document.documentElement.style.setProperty('--gameBoardSizeX', (gameBoardSizeX+1).toString());
-    document.documentElement.style.setProperty('--gameBoardSizeY', (gameBoardSizeY+1).toString());
-
     // Create the gameBoard div
     GameBoard=document.createElement("div");   // Create a <button> element;
     GameBoard.id = "GameBoard";
@@ -152,8 +149,8 @@ function initializeGameBoard(){
     rect = GameBoard.getBoundingClientRect();
     gbLeft = rect.left + window.scrollX;
     gbTop = rect.top + window.scrollY;
-    GameBoard.style.width=(gameBoardSizeX+1)*gameScale+"px";
-    GameBoard.style.height=(gameBoardSizeY+1)*gameScale+"px";
+    GameBoard.style.width=(gameBoardSizeY+1)*gameScale+"px";
+    GameBoard.style.height=(gameBoardSizeX+1)*gameScale+"px";
 
 
     GameBoardContainer.addEventListener('mousedown', function(event){dragStart(event)}, false);
@@ -165,18 +162,18 @@ function initializeGameBoard(){
     GameBoardContainer.addEventListener('touchmove', function(event){drag(event)}, false);
 
 
-    for(let x=0;x<gameBoardSizeX+1;x++){
-        for (let y=0;y<gameBoardSizeY+1;y++){
+    for(let y=0;y<gameBoardSizeY+1;y++){
+        for (let x=0;x<gameBoardSizeX+1;x++){
             let gridBox = document.createElement("div");
             gridBox.style.width = gameScale+"px";
             gridBox.style.height = gameScale+"px";
             if (y===0 || x===0){
                 gridBox.className = "organizerGridBox";
             }else {
-                gridBox.id = "" + String.fromCharCode(x + 64) + y;
+                gridBox.id = "" + String.fromCharCode(y + 64) + x;
                 gridBox.className = "gameGridBox";
             }
-            gameBoardArray[y][x] = gridBox;
+            gameBoardArray[x][y] = gridBox;
             document.getElementById("GameBoard").appendChild(gridBox);
         }
     }
