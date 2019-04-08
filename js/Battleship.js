@@ -199,9 +199,18 @@ class Ship {
         this.element.textContent = this.id;
         let me=this;
         this.element.addEventListener('mousedown', function(event){Ship.dragItem=event.target}, false);
-        this.element.addEventListener('mouseup', function(event){Ship.dragItem;}, false);
-        this.element.addEventListener('touchstart', function(event){Ship.dragItem=event.target}, false);
-        this.element.addEventListener('touchend', function(event){Ship.dragItem;}, false);
+        this.element.addEventListener('mouseup', function(event){
+                Ship.dragItem=undefined;
+
+                let drect = me.element.getBoundingClientRect();
+                let x = event.clientX - drect.left; //x position within the element.
+                let y = event.clientY - drect.top;
+
+                me.element.style.visibility="hidden";
+                me.move(document.elementFromPoint(event.clientX - x,event.clientY-y));
+                me.element.style.visibility="visible";
+
+            }, false);
         Ship.playerShips.push(this);
         GameBoardContainer.appendChild(this.element);
     }
