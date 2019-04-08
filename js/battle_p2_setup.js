@@ -21,7 +21,7 @@ var random10 = (function () {return Math.floor((Math.random()*10)+1)});
 var shipHead;
 // fuction to create board array.
 
-    var rows = ['a', 'b','c','d','e','f','g','i','j'];
+    var rows = ['a', 'b','c','d','e','f','g','h','i','j'];
 
 
 
@@ -211,7 +211,8 @@ var shipHead;
     }
 
     function remElFromArr(item){
-        delete boardArray[boardArray.indexOf(ite)];
+        return delete boardArray[boardArray.indexOf(item)];
+
     }
 
     // find grids for ship to be placed horizontally.
@@ -234,9 +235,11 @@ var shipHead;
             console.log(y+x);
             coordArr.push(y+x);                     // adding new coordinate to coord array to check against main coordinates array
         }
-        // if true remove the coords from the array. else return false;
+        // if true remove the coords from the board array and return true. else return false;
         if (testBrdArr(coordArr)){
-            coordArr.forEach(remElFromArr(boardArray));
+            console.log("Coords " + coordArr + " are in array");
+            coordArr.forEach(remElFromArr);
+            return true;
         }else {
             return false;
         }
