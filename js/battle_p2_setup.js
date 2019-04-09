@@ -11,7 +11,7 @@ submarine /  1    4
 
 // global variables. May change to local if not needed globally
 var boardArray = [];
-var p2Ships = ["battleship", "cruiser","cruiser", "destroyer","destroyer","destroyer","submarine","submarine","submarine","submarine"]; // may not be needed
+var p2Ships = ["battleship", "cruiser", "destroyer","submarine"]; // may not be needed
 var p2BattleShip = [4,1];   // size, how many times it can be placed.
 var p2Cruiser = [3,2];      // size, how many times it can be placed.
 var p2Destroyer = [2,3];    // size, how many times it can be placed.
@@ -19,6 +19,7 @@ var p2sub = [1,4];          // size, how many times it can be placed.
 var random2 = (function () {return Math.floor(Math.random() * 2)}); //randomizer for vertical or horizontal placement
 var random10 = (function () {return Math.floor((Math.random()*10)+1)});
 var shipHead;
+var batCounter=0;
 // fuction to create board array.
 
     var rows = ['a', 'b','c','d','e','f','g','h','i','j'];
@@ -184,8 +185,8 @@ var shipHead;
                 return p2sub;
 
             default:
-                console.error("Error at shipSelector" + item);
-                break;
+                return console.error("Error at shipSelector" + item);
+
         }
     }
 
@@ -230,7 +231,7 @@ var shipHead;
             x = 10 - blx;
             console.log("Value of x after operation: " + x);             // debug data, comment out when not needed.
         }
-        for(var i = 0; i < blx ; i++){              // check to make sure all the necessery coordinates are present in board array
+        for(var i = 0; i < blx ; i++){              // stores all the needed coords in coord array
             x++;
             console.log(y+x);
             coordArr.push(y+x);                     // adding new coordinate to coord array to check against main coordinates array
@@ -241,7 +242,8 @@ var shipHead;
             coordArr.forEach(remElFromArr);
             return true;
         }else {
-            return false;
+            console.error("running placeHorz again");  // debug data
+            placeHorz(blx);
         }
     }
 
@@ -256,20 +258,51 @@ var shipHead;
         var coordArr = [];
 
         if ((yNum+blx)>10){               // if ship size + yNum value > 10, subtract size from yNum value.
-            console.log("valye of ex befor operation: " + (yNum+blx));        // debug data, comment out when not needed.
+            console.log("valye of ex before operation: " + (yNum+blx));        // debug data, comment out when not needed.
             yNum = 10 - blx;
-            console.log("Value of x after operation: " + x);             // debug data, comment out when not needed.
-
+            console.log("Value of x after operation: " + yNum);             // debug data, comment out when not needed.
         }
-
+        for(var i = 0; i < blx ; i++){              // stores all the needed coords in coord array
+            yNum++;
+            y= rowNumToAlpha(yNum);
+            console.log(y+x);
+            coordArr.push(y+x);                     // adding new coordinate to coord array to check against main coordinates array
+        }
+        // if true remove the coords from the board array and return true. else return false;
+        if (testBrdArr(coordArr)){
+            console.log("Coords " + coordArr + " are in array");
+            coordArr.forEach(remElFromArr);
+            return true;
+        }else {
+            console.error('running placeVert again'); // debug info
+            placeVert(blx);
+        }
 
 }
 
     // place ships on the grid and occupy the space. Remove grid points so as not to overlap ships
-    function placeShips() {
-        for (var i = 0; i < p2Ships.length; i++){
-            // todo: fill this stuff in. lol
-
+    function placeShips(ship) {
+        var ori= random2;                       // random int for vert or horz placement
+        var size=ship[0];                       //blx from first element in shop array
+        var i = ship[1];                        // how many times to place an instance the ship
+        console.log("ship[1] = " + i);          // debug info
+        for (i; i>0; i--){                       // loop for ship placement
+            if(ori === 0){
+                placeHorz(size);
+            }else {
+                placeVert(size);
+            }
+            ori = random2;                      // roll for vert/horz/ placement
+            batCounter++;
+            console.log("**************************** ships placed = " + batCounter);            // debug info
         }
     }
 
+    function p2BoardSetup(item) {
+        var ship = shipSelector(item);
+
+        placeShips(ship);
+
+    }
+
+p2Ships.forEach(p2BoardSetup);
