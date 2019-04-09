@@ -129,6 +129,8 @@ function resizeEverything(){
     }
     for(let i=0;i<Ship.playerShips.length;i++){
         let ship = Ship.playerShips[i];
+
+        ship.element.style.transition ="none";
         ship.move(ship.lastLocation);
     }
 }
@@ -195,9 +197,14 @@ class Ship {
         this.element.className = "GamePiece_Ship";
         this.element.textContent = this.id;
         let me=this;
-        this.element.addEventListener('mousedown', function(event){Ship.dragItem=event.target}, false);
+        this.element.addEventListener('mousedown', function(event){
+                Ship.dragItem=event.target;
+                me.element.style.transition ="none";
+            }, false);
         this.element.addEventListener('mouseup', function(event){
                 Ship.dragItem=undefined;
+                me.element.style.transition ="0.2s ease";
+                me.element.style.transitionProperty ="top, left";
 
                 let drect = me.element.getBoundingClientRect();
                 let x = event.clientX - drect.left-(gameScale/2); //x position within the element.
@@ -206,7 +213,6 @@ class Ship {
                 me.element.style.visibility="hidden";
                 me.move(document.elementFromPoint(event.clientX - x,event.clientY-y));
                 me.element.style.visibility="visible";
-
             }, false);
         Ship.playerShips.push(this);
         GameBoardContainer.appendChild(this.element);
