@@ -33,18 +33,28 @@ let gameBoardArray=createArray(gameBoardSizeX+1,gameBoardSizeY+1);
 
 function dragStart(e) {
     let curLoc = getLocation(e.target);
-    xOffset = curLoc.left;
-    yOffset = curLoc.top;
-    if (e.type === "touchstart") {
-        initialX = e.touches[0].clientX - xOffset;
-        initialY = e.touches[0].clientY - yOffset;
-    } else {
-        initialX = e.clientX - xOffset;
-        initialY = e.clientY - yOffset;
-    }
+    if(Ship.dragItem) {
+        Ship.mouseX=e.offsetX;
+        Ship.mouseY=e.offsetY;
+        if (Ship.dragItem.direction) {
+            xOffset = curLoc.left;
+            yOffset = curLoc.top;
+        } else {
+            xOffset = curLoc.left;
+            yOffset = curLoc.top;
+        }
+        if (e.type === "touchstart") {
+            initialX = e.touches[0].clientX - xOffset;
+            initialY = e.touches[0].clientY - yOffset;
+        } else {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+        }
 
-    if (e.target === Ship.dragItem) {
-        active = true;
+        if (e.target === Ship.dragItem.element) {
+            active = true;
+            Ship.dragItem.element.style.zIndex = "1000";
+        }
     }
 }
 
@@ -52,12 +62,15 @@ function dragEnd(e) {
     initialX = currentX;
     initialY = currentY;
 
+    Ship.mouseX=undefined;
+    Ship.mouseY=undefined;
     active = false;
 }
 
 function drag(e) {
     if (active) {
-
+        Ship.mouseX=e.offsetX;
+        Ship.mouseY=e.offsetY;
         e.preventDefault();
 
         if (e.type === "touchmove") {
@@ -71,7 +84,7 @@ function drag(e) {
         xOffset = currentX;
         yOffset = currentY;
         //console.log(currentX + ", " + currentY);
-        setTranslate(currentX, currentY, Ship.dragItem);
+        setTranslate(currentX, currentY, Ship.dragItem.element);
     }
 }
 
@@ -93,7 +106,6 @@ function createArray(length) {
 
     return arr;
 }
-
 
 function getLocation(el) {
     if (typeof el !== "object"){
@@ -162,7 +174,17 @@ function initializeGameBoard(){
     GameBoardContainer.addEventListener('touchstart', function(event){dragStart(event)}, false);
     GameBoardContainer.addEventListener('touchend', function(event){dragEnd(event)}, false);
     GameBoardContainer.addEventListener('touchmove', function(event){drag(event)}, false);
-
+    document.onkeydown = function (e) {
+        console.log(e);
+        e = e || window.event;
+        if(Ship.dragItem) {
+            if (e.key === "Shift") {
+                console.log("Shift pressed");
+                Ship.dragItem.rotate(Ship.mouseX, Ship.mouseY);
+                Ship.dragItem.rotateKey = !Ship.dragItem.rotateKey;
+            }
+        }
+    };
 
     for(let y=0;y<gameBoardSizeY+1;y++){
         for (let x=0;x<gameBoardSizeX+1;x++){
@@ -187,9 +209,11 @@ class Ship {
         this.id = Ship.incrementId();
         this.length = length;
         this.direction = true;
-        this.moved=false;
         this.lastLocation=null;
-        this.grabOffset=[0,0];
+
+        this.rotated=false;
+        this.rotateKey = false;
+
         // Auto run on create
         this.element=document.createElement("div");   // Create a <button> element;
 
@@ -198,61 +222,75 @@ class Ship {
         this.element.textContent = this.id;
         let me=this;
         this.element.addEventListener('mousedown', function(event){
-                Ship.dragItem=event.target;
+                Ship.dragItem=me;
                 me.element.style.transition ="none";
             }, false);
         this.element.addEventListener('mouseup', function(event){
+                me.element.style.zIndex="100";
                 Ship.dragItem=undefined;
                 me.element.style.transition ="0.2s ease";
                 me.element.style.transitionProperty ="top, left";
 
                 let drect = me.element.getBoundingClientRect();
-                let x = event.clientX - drect.left-(gameScale/2); //x position within the element.
-                let y = event.clientY - drect.top -(gameScale/2);
-
+                let x;
+                let y;
+                if (me.direction) {
+                    x = event.clientX - drect.left - (gameScale / 2); //x position within the element.
+                    y = event.clientY - drect.top - (gameScale / 2);
+                }else{
+                    x = event.clientX - drect.left - (gameScale / 2); //x position within the element.
+                    y = event.clientY - drect.top - (gameScale / 2);
+                }
                 me.element.style.visibility="hidden";
-                me.move(document.elementFromPoint(event.clientX - x,event.clientY-y));
+                let elemUnder = document.elementFromPoint(event.clientX - x,event.clientY-y);
+                elemUnder.style.backgroundColor="red";
+                if (elemUnder.className.indexOf("gameGridBox") !==-1) {
+                    me.move(elemUnder);
+                }else{
+                    me.move(me.lastLocation);
+                }
                 me.element.style.visibility="visible";
             }, false);
         Ship.playerShips.push(this);
+        this.element.style.height = ((gameScale * this.length)-2) + 'px';
+        this.element.style.width = (gameScale-2) + 'px';
         GameBoardContainer.appendChild(this.element);
     }
-
-    move(locationID, dir,offset) {
-        if (offset === undefined){offset=[0,0]} // Set offset to 0,0 if not passed in.
+    rotate(x,y){
+        //Only rotate once per shift press
+        if (!this.rotateKey) {
+            this.direction = !this.direction;
+            console.log(this.direction);
+            this.rotateKey=true;
+            this.rotated=!this.rotated;
+            this.element.style.transition ="0.1s ease";
+            this.element.style.transitionProperty ="transform";
+            this.element.style.transformOrigin =x+"px "+y+'px';
+            if (this.direction) {
+                this.element.style.transform="rotate(0deg)";
+            } else {
+                this.element.style.transform="rotate(90deg)";
+            }
+        }
+    }
+    move(locationID, dir) {
         if (dir !== undefined){this.direction = dir;}
-        if (locationID ===undefined){locationID = this.lastLocation}
+        if (locationID === undefined){locationID = this.lastLocation}
         this.lastLocation = locationID;
-        if (this.direction) {
-            this.element.style.height = ((gameScale * this.length)-2) + 'px';
-            this.element.style.width = (gameScale-2) + 'px';
-        } else {
-            this.element.style.height = (gameScale-2) + 'px';
-            this.element.style.width = ((gameScale * this.length)-2) + 'px';
-        }
-
-        //Convert the offset to gameScale intervals
-        console.log("Before conversion offset: " + offset);
-        offset[0]=Math.floor(offset[0]/gameScale)*gameScale;
-        offset[1]=Math.floor(offset[1]/gameScale)*gameScale;
-        console.log("After conversion offset: " + offset);
-        if (this.rotated){
-            offset = [offset[1],offset[0]];
-            this.rotated=false;
-            console.log("After rotation offset: " + offset);
-        }
 
         //Set the location of the ship
         let loc = getLocation(locationID);
         this.element.style.position = "absolute";
-        this.element.style.top = ((loc.top + 1)- offset[1]) + 'px';
-        this.element.style.left = ((loc.left + 1)- offset[0]) + 'px';
+        this.element.style.top = (loc.top + 1) + 'px';
+        this.element.style.left = (loc.left + 1) + 'px';
         this.element.style.lineHeight = this.element.style.height;
     }
 
     //Class variable to track all ships
     static playerShips = [];
     static dragItem;
+    static mouseX;
+    static mouseY;
 
     //Auto generate an ID for the ship
     static incrementId() {
