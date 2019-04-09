@@ -245,6 +245,26 @@ var shipHead;
         }
     }
 
+    function placeVert(blx) {
+        var head = randoCoordinate();               // locate the head of the ship
+        console.log(head);
+        var y = (head.charAt(0));   // stores the y coordinate (alpha)
+        console.log(y);
+        var x = +(head.charAt(1) + head.charAt(2));        // stores the x coordiante (numeric)
+        console.log(x);
+        var yNum = rowAlphaToNum(y);
+        var coordArr = [];
+
+        if ((yNum+blx)>10){               // if ship size + yNum value > 10, subtract size from yNum value.
+            console.log("valye of ex befor operation: " + (yNum+blx));        // debug data, comment out when not needed.
+            yNum = 10 - blx;
+            console.log("Value of x after operation: " + x);             // debug data, comment out when not needed.
+
+        }
+
+
+}
+
     // place ships on the grid and occupy the space. Remove grid points so as not to overlap ships
     function placeShips() {
         for (var i = 0; i < p2Ships.length; i++){
