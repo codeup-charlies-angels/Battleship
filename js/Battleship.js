@@ -34,8 +34,6 @@ let gameBoardArray=createArray(gameBoardSizeX+1,gameBoardSizeY+1);
 function dragStart(e) {
     let curLoc = getLocation(e.target);
     if(Ship.dragItem) {
-        Ship.mouseX=e.offsetX;
-        Ship.mouseY=e.offsetY;
         if (Ship.dragItem.direction) {
             xOffset = curLoc.left;
             yOffset = curLoc.top;
@@ -43,14 +41,11 @@ function dragStart(e) {
             xOffset = curLoc.left;
             yOffset = curLoc.top;
         }
-        if (e.type === "touchstart") {
-            initialX = e.touches[0].clientX - xOffset;
-            initialY = e.touches[0].clientY - yOffset;
-        } else {
-            initialX = e.clientX - xOffset;
-            initialY = e.clientY - yOffset;
-        }
+        initialX = e.clientX - xOffset;
+        initialY = e.clientY - yOffset;
 
+        Ship.mouseX=e.offsetX;
+        Ship.mouseY=e.offsetY;
         if (e.target === Ship.dragItem.element) {
             active = true;
             Ship.dragItem.element.style.zIndex = "1000";
@@ -62,21 +57,18 @@ function dragEnd(e) {
     initialX = currentX;
     initialY = currentY;
 
-    Ship.mouseX=undefined;
-    Ship.mouseY=undefined;
     active = false;
 }
 
 function drag(e) {
+    Ship.mouseX=e.offsetX;
+    Ship.mouseY=e.offsetY;
     if (active) {
-        Ship.mouseX=e.offsetX;
-        Ship.mouseY=e.offsetY;
         e.preventDefault();
-
-        if (e.type === "touchmove") {
-            currentX = e.touches[0].clientX - initialX;
-            currentY = e.touches[0].clientY - initialY;
-        } else {
+        if (Ship.dragItem.direction) {
+            currentX = e.clientX - initialX;
+            currentY = e.clientY - initialY;
+        }else{
             currentX = e.clientX - initialX;
             currentY = e.clientY - initialY;
         }
@@ -87,7 +79,6 @@ function drag(e) {
         setTranslate(currentX, currentY, Ship.dragItem.element);
     }
 }
-
 function setTranslate(xPos, yPos, el) {
     el.style.position="absolute";
     el.style.left=xPos+"px";
@@ -103,7 +94,6 @@ function createArray(length) {
         let args = Array.prototype.slice.call(arguments, 1);
         while(i--) arr[length-1 - i] = createArray.apply(this, args);
     }
-
     return arr;
 }
 
@@ -180,7 +170,7 @@ function initializeGameBoard(){
         if(Ship.dragItem) {
             if (e.key === "Shift") {
                 console.log("Shift pressed");
-                Ship.dragItem.rotate(Ship.mouseX, Ship.mouseY);
+                Ship.dragItem.rotate(e);
                 Ship.dragItem.rotateKey = !Ship.dragItem.rotateKey;
             }
         }
@@ -234,43 +224,57 @@ class Ship {
                 let drect = me.element.getBoundingClientRect();
                 let x;
                 let y;
-                if (me.direction) {
-                    x = event.clientX - drect.left - (gameScale / 2); //x position within the element.
-                    y = event.clientY - drect.top - (gameScale / 2);
-                }else{
-                    x = event.clientX - drect.left - (gameScale / 2); //x position within the element.
-                    y = event.clientY - drect.top - (gameScale / 2);
-                }
+                x = initialX - (gameScale / 2); //x position within the element.
+                y = initialY - (gameScale / 2);
                 me.element.style.visibility="hidden";
-                let elemUnder = document.elementFromPoint(event.clientX - x,event.clientY-y);
+                let elemUnder = document.elementFromPoint(event.clientX-x,event.clientY-y);
                 elemUnder.style.backgroundColor="red";
                 if (elemUnder.className.indexOf("gameGridBox") !==-1) {
                     me.move(elemUnder);
+                    console.log("moved to elemUnder");
                 }else{
                     me.move(me.lastLocation);
                 }
                 me.element.style.visibility="visible";
             }, false);
+        this.orient();
         Ship.playerShips.push(this);
-        this.element.style.height = ((gameScale * this.length)-2) + 'px';
-        this.element.style.width = (gameScale-2) + 'px';
         GameBoardContainer.appendChild(this.element);
     }
-    rotate(x,y){
+    orient(e){
+        if (this.direction) {
+            this.height = Number((gameScale * this.length)-2);
+            this.width = Number(gameScale-2);
+        } else {
+            this.width = Number((gameScale * this.length)-2);
+            this.height = Number(gameScale-2);
+            this.element.style.top=Ship.mouseX+yOffset+'px';
+            this.element.style.left=Ship.mouseY+xOffset+'px';
+        }
+
+        currentX = e.clientX - initialX;
+        currentY = e.clientY - initialY;
+        xOffset = currentX;
+        yOffset = currentY;
+        //console.log(currentX + ", " + currentY);
+        setTranslate(currentX, currentY, Ship.dragItem.element);
+        console.log("Setting X:"+this.element.style.left);
+        console.log("Setting Y:"+this.element.style.top);
+
+        this.element.style.height = this.height+'px';
+        this.element.style.width = this.width+'px';
+        this.element.style.lineHeight = this.element.style.height;
+    }
+    rotate(e){
         //Only rotate once per shift press
         if (!this.rotateKey) {
             this.direction = !this.direction;
             console.log(this.direction);
             this.rotateKey=true;
             this.rotated=!this.rotated;
-            this.element.style.transition ="0.1s ease";
-            this.element.style.transitionProperty ="transform";
-            this.element.style.transformOrigin =x+"px "+y+'px';
-            if (this.direction) {
-                this.element.style.transform="rotate(0deg)";
-            } else {
-                this.element.style.transform="rotate(90deg)";
-            }
+            this.orient(e);
+            console.log("MX: "+Ship.mouseX);
+            console.log("MY: "+Ship.mouseY);
         }
     }
     move(locationID, dir) {
@@ -280,9 +284,17 @@ class Ship {
 
         //Set the location of the ship
         let loc = getLocation(locationID);
+        loc.left=parseFloat(loc.left);
+        loc.top=parseFloat(loc.top);
         this.element.style.position = "absolute";
         this.element.style.top = (loc.top + 1) + 'px';
         this.element.style.left = (loc.left + 1) + 'px';
+        console.log("MX: "+Ship.mouseX);
+        console.log("MY: "+Ship.mouseY);
+        console.log("IX: "+ initialX);
+        console.log("IY: "+ initialY);
+        console.log("CX: "+ currentX);
+        console.log("CY: "+ currentY);
         this.element.style.lineHeight = this.element.style.height;
     }
 
