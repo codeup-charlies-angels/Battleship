@@ -225,9 +225,22 @@ class Ship {
                 x = initialX - (gameScale / 2); //x position within the element.
                 y = initialY - (gameScale / 2);
                 me.element.style.visibility="hidden";
+                let validSpot=true;
                 let elemUnder = document.elementFromPoint(Ship.mouseX-x ,Ship.mouseY-y);
-                elemUnder.style.backgroundColor="red";
-                if (elemUnder.className.indexOf("gameGridBox") !==-1) {
+                for(let ci=0;ci<me.length;ci++){
+                    let chkBlock;
+                    if (me.direction) {
+                        chkBlock = document.elementFromPoint(Ship.mouseX - x, Ship.mouseY - y + (ci * gameScale));
+                    }else{
+                        chkBlock = document.elementFromPoint(Ship.mouseX - x + (ci * gameScale), Ship.mouseY - y);
+                    }
+                    if (chkBlock.className.indexOf("gameGridBox") ===-1){
+                        validSpot=false;
+                        break;
+                    }
+                }
+                if(validSpot) {
+                    elemUnder.style.backgroundColor="red";
                     me.move(elemUnder);
                     console.log("moved to elemUnder");
                 }else{
