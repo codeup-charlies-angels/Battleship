@@ -8,6 +8,7 @@ body{
     left: 0;
     height: 100%;
     width: 100%;
+    user-select: none;
 }
 
 #GameBoardContainer {
@@ -41,4 +42,5 @@ body{
 }
 .organizerGridBox{
     background-color: greenyellow;
+    text-align:center;
 }

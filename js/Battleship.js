@@ -113,6 +113,7 @@ function resizeEverything(){
 
     GameBoard.style.width=(gameBoardSizeX+1)*gameScale+"px";
     GameBoard.style.height=(gameBoardSizeY+1)*gameScale+"px";
+    GameBoard.style.fontSize=gameScale/2+"px";
 
     rect = GameBoard.getBoundingClientRect();
     gbLeft = rect.left + window.scrollX;
@@ -125,13 +126,15 @@ function resizeEverything(){
             gridBox.style.left = gbLeft + ((x) * gameScale) + "px";
             gridBox.style.width=gameScale+"px";
             gridBox.style.height=gameScale+"px";
+            gridBox.style.lineHeight = gameScale+"px";
         }
     }
     for(let i=0;i<Ship.playerShips.length;i++){
         let ship = Ship.playerShips[i];
-
         ship.element.style.transition ="none";
+        ship.element.style.fontSize=gameScale/1.5+"px";
         ship.move(ship.lastLocation);
+
     }
 }
 
@@ -181,6 +184,15 @@ function initializeGameBoard(){
             gridBox.style.height = gameScale+"px";
             if (y===0 || x===0){
                 gridBox.className = "organizerGridBox";
+                if (y===0 && x!==0){
+                    gridBox.textContent=x;
+                }
+                if (x===0 && y!==0){
+                    gridBox.textContent=""+String.fromCharCode(y + 64);
+                }
+                if (y===0&&x===0){
+                    // gridBox.textContent="o";
+                }
             }else {
                 gridBox.id = "" + String.fromCharCode(y + 64) + x;
                 gridBox.className = "gameGridBox";
@@ -189,7 +201,6 @@ function initializeGameBoard(){
             document.getElementById("GameBoard").appendChild(gridBox);
         }
     }
-    resizeEverything();
 }
 
 class Ship {
@@ -317,7 +328,6 @@ class Ship {
 
 initializeGameBoard();
 
-
 //Create the 5 random ships of varying sizes
 for(let i=0;i<5;i++){
     new Ship(i+1);
@@ -325,6 +335,7 @@ for(let i=0;i<5;i++){
 }
 
 
+resizeEverything();
 
 // })();
 
