@@ -82,7 +82,16 @@ class EnemyShip {
         enemyBoardArray=tempEnemyBoardArray;
         return true;
     }
-
+    hit(location){
+        this.liveBlocks.splice(this.liveBlocks.indexOf(location), 1);
+        if (this.liveBlocks.length===0){
+            EnemyShip.enemyShips.splice(EnemyShip.enemyShips.indexOf(this), 1);
+            Ship.playerShips[this.id].element.style.backgroundColor="red";
+            return "You sunk my "+this.type+"!";
+        }else{
+            return "Hit!";
+        }
+    }
 
     //Class variable to track all ships
     static enemyShips = [];

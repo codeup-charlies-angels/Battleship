@@ -324,6 +324,19 @@ class Ship {
         else this.latestId++;
         return this.latestId;
     }
+
+
+    static fire(location){
+        let fireY = location.split("")[0].charCodeAt(0)-64;
+        let fireX = location.split("")[1];
+        console.log(fireY + ", " + fireX);
+        if(enemyBoardArray[fireY][fireX]!==undefined){
+            console.log(EnemyShip.enemyShips[enemyBoardArray[fireY][fireX]].hit(location));
+            return true;
+        }else{
+            console.log("Miss!");
+        }
+    }
 }
 
 
