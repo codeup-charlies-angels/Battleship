@@ -185,13 +185,13 @@ function initializeGameBoard(){
             if (y===0 || x===0){
                 gridBox.className = "organizerGridBox";
                 if (y===0 && x!==0){
-                    gridBox.textContent=x;
+                    gridBox.textContent=""+x;
                 }
                 if (x===0 && y!==0){
                     gridBox.textContent=""+String.fromCharCode(y + 64);
                 }
                 if (y===0&&x===0){
-                    // gridBox.textContent="o";
+                     gridBox.style.backgroundColor="orange";
                 }
             }else {
                 gridBox.id = "" + String.fromCharCode(y + 64) + x;
@@ -208,6 +208,7 @@ class Ship {
         this.id = Ship.incrementId();
         this.length = length;
         this.direction = true;
+        this.lastDirection=this.direction;
         this.lastLocation=null;
 
         this.rotated=false;
@@ -255,7 +256,7 @@ class Ship {
                     me.move(elemUnder);
                     console.log("moved to elemUnder");
                 }else{
-                    me.move(me.lastLocation);
+                    me.move(me.lastLocation,me.lastDirection);
                 }
                 me.element.style.visibility="visible";
             }, false);
@@ -287,6 +288,7 @@ class Ship {
     rotate(e){
         //Only rotate once per shift press
         if (!this.rotateKey) {
+            this.lastDirection=this.direction;
             this.direction = !this.direction;
             // console.log(this.direction);
             this.rotateKey=true;
