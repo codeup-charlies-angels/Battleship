@@ -267,7 +267,7 @@ function placeVert(blx) {
     var coordArr = [];
 
     if ((yNum + blx) > 10) {               // if ship size + yNum value > 10, subtract size from yNum value.
-        console.log("valye of ex before operation: " + (yNum + blx));        // debug data, comment out when not needed.
+        console.log("value of ex before operation: " + (yNum + blx));        // debug data, comment out when not needed.
         yNum = 10 - blx;
         console.log("Value of x after operation: " + yNum);             // debug data, comment out when not needed.
     }
@@ -355,14 +355,15 @@ function firingPrompt() {
 }
 
 function p1Target(coord) {
+    coord = coord.toUpperCase();
     console.log(coord);
-    var response = false;
+
+    let response = false;
     if (shotLog.includes(coord)) {
         console.log("You have already fired on this grid.");
         response = true;
-    } else if (!boardArray.includes(coord)) {
+    } else if (boardArray.includes(coord)) {
         shotLog.push(coord);
-
         console.log("That is a miss, you hit open water.");
         response = true;
     } else {
@@ -370,7 +371,6 @@ function p1Target(coord) {
         console.log("that's a confirmed hit!!!");
         score += 1;
         response = true;
-
     }
     if (score >= 17) {
         confirm("Congrats! You sunk all the enemy ships!");
