@@ -348,7 +348,7 @@ p2Ships.forEach(p2BoardSetup);
 */
 
 function firingPrompt() {
-    wait(6000);
+    wait(2000);
     var target = prompt("Enter firing Coordinates");
     //if (target != null) {
         target=target.toUpperCase();
