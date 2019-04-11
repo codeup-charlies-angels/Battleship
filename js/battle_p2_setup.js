@@ -33,6 +33,14 @@ var score = 0;
 var rows = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
 
 
+function wait(ms)
+{
+    var d = new Date();
+    var d2 = null;
+    do { d2 = new Date(); }
+    while(d2-d < ms);
+}
+
 function arrayBuilder(item, index, array) {
     for (var i = 1; i < 11; i++) {
         var x = (item + i);
@@ -40,13 +48,12 @@ function arrayBuilder(item, index, array) {
         x = x.toUpperCase();
         // console.log(x); //debug
         boardArray.push(x);
+        copyBoard.push(x);
     }
 }
 
 // creates an array with all the coordinate combinations for game grid.
-rows.forEach(arrayBuilder)
-copyBoard = boardArray;
-
+rows.forEach(arrayBuilder);
 // find row
 function findRow() {
     //change random int to a corresponding letter
@@ -341,33 +348,46 @@ p2Ships.forEach(p2BoardSetup);
 */
 
 function firingPrompt() {
+    wait(6000);
     var target = prompt("Enter firing Coordinates");
-
-    // // while   (!(copyBoard.includes(target))){
-    //      //target = prompt("Enter firing Coordinates");
-    //      console.log("oust of range");
-    //  //}
-
+    //if (target != null) {
+        target=target.toUpperCase();
+   // }
+     // while   (!(copyBoard.includes(target))){
+     //     target = prompt("Enter firing Coordinates");
+     //     console.log("oust of range");
+     //     alert( target + " is out of range.");
+     // }
+    if(!copyBoard.includes(target)){
+        alert( target + " is out of range.");
+        firingPrompt();
+        return target;
+    }
 
     p1Target(target);
+    firingPrompt();
     return target;
 
 }
 
 function p1Target(coord) {
+    coord = coord.toUpperCase();
     console.log(coord);
     var response = false;
     if (shotLog.includes(coord)) {
         console.log("You have already fired on this grid.");
+        alert("You have already fired on this grid.");
         response = true;
-    } else if (!boardArray.includes(coord)) {
+    } else if (boardArray.includes(coord)) {
         shotLog.push(coord);
 
         console.log("That is a miss, you hit open water.");
+        alert("That is a miss, you hit open water.");
         response = true;
     } else {
         shotLog.push(coord);
         console.log("that's a confirmed hit!!!");
+        alert("that's a confirmed hit!!!");
         score += 1;
         response = true;
 
@@ -381,4 +401,4 @@ function p1Target(coord) {
 }
 
 
-//firingPrompt();
+firingPrompt();
