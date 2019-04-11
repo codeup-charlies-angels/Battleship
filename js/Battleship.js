@@ -331,10 +331,10 @@ class Ship {
 initializeGameBoard();
 
 //Create the 5 random ships of varying sizes
-for(let i=0;i<5;i++){
-    new Ship(i+1);
-    (Ship.playerShips[i]).move("A"+(i+1),true);
-}
+// for(let i=0;i<5;i++){
+//     new Ship(i+1);
+//     (Ship.playerShips[i]).move("A"+(i+1),true);
+// }
 
 
 resizeEverything();

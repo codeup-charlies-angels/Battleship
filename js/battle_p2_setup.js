@@ -19,8 +19,8 @@ var p2sub = [1, 4];          // size, how many times it can be placed.
 var random2 = (function () {
     return Math.floor(Math.random() * 2)
 }); //randomizer for vertical or horizontal placement
-var random10 = (function () {
-    return Math.floor((Math.random() * 10) + 1)
+var randomX = (function (x) {
+    return Math.floor((Math.random() * x) + 1)
 });
 var shipHead;
 var batCounter = 0;
