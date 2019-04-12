@@ -16,22 +16,24 @@ class EnemyShip {
         this.attemptCounter=0;
         this.generateLocation();
         EnemyShip.enemyShips.push(this);
-
     }
     generateLocation(){
         this.spotChosen=false;
         switch(this.type.toLowerCase()){
+            case "carrier":
+                this.length=5;
+                break;
             case "battleship":
                 this.length=4;
+                break;
+            case "submarine":
+                this.length=3;
                 break;
             case "cruiser":
                 this.length=3;
                 break;
             case "destroyer":
                 this.length=2;
-                break;
-            case "submarine":
-                this.length=1;
                 break;
         }
         let randX,randY,randDir;
@@ -47,11 +49,11 @@ class EnemyShip {
             this.liveBlocks=[];
             randDir = Boolean(Math.round(Math.random()));
             if (randDir){
-                randY = randomN(7);
+                randY = randomN(10-this.length+1);
                 randX = randomN(10);
             }else{
                 randY = randomN(10);
-                randX = randomN(7);
+                randX = randomN(10-this.length+1);
             }
             let freeSpot=true;
             console.log(typeof tempEnemyBoardArray[randX][randY]);
@@ -102,10 +104,11 @@ class EnemyShip {
         EnemyShip.enemyShips = [];
         EnemyShip.genFailed=false;
         let requestedShips = [
+            "carrier",
             "battleship",
-            "cruiser","cruiser",
-            "destroyer","destroyer","destroyer",
-            "submarine","submarine","submarine","submarine"
+            "cruiser",
+            "destroyer",
+            "submarine"
         ];
         enemyBoardArray=createArray(gameBoardSizeX+1,gameBoardSizeY+1);
         let success = true;
@@ -119,6 +122,7 @@ class EnemyShip {
                 break;
             }
         }
+        EnemyShip.successfulGen =success;
         return success;
 
     }
@@ -134,10 +138,10 @@ let count=0;
 do{
     count++;
     if(count>100)break;
-    EnemyShip.successfulGen = EnemyShip.generateEnemies();
+    EnemyShip.generateEnemies();
 }while(!EnemyShip.successfulGen);
-
-EnemyShip.enemyShips.forEach(function(ship){
-    new Ship(ship.length);
-    Ship.playerShips[ship.id].move(ship.liveBlocks[0],ship.direction);
-});
+//
+// EnemyShip.enemyShips.forEach(function(ship){
+//     new Ship(ship.length);
+//     Ship.playerShips[ship.id].move(ship.liveBlocks[0],ship.direction);
+// });

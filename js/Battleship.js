@@ -22,7 +22,7 @@ let initialY = undefined;
 let xOffset = 0;
 let yOffset = 0;
 
-let GameBoard;
+let PlayerGameBoard;
 let GameBoardContainer;
 let gameBoardArray=createArray(gameBoardSizeX+1,gameBoardSizeY+1);
 //
@@ -74,7 +74,6 @@ function drag(e) {
         }
 
         setTranslate(currentX, currentY, Ship.dragItem.element);
-        console.log(currentX + ", " + currentY);
     }
 }
 function setTranslate(xPos, yPos, el) {
@@ -111,11 +110,11 @@ function resizeEverything(){
     gameScale = ((window.innerHeight/15));
     // gameScale=50;
 
-    GameBoard.style.width=(gameBoardSizeX+1)*gameScale+"px";
-    GameBoard.style.height=(gameBoardSizeY+1)*gameScale+"px";
-    GameBoard.style.fontSize=gameScale/2+"px";
+    PlayerGameBoard.style.width=(gameBoardSizeX+1)*gameScale+"px";
+    PlayerGameBoard.style.height=(gameBoardSizeY+1)*gameScale+"px";
+    PlayerGameBoard.style.fontSize=gameScale/2+"px";
 
-    rect = GameBoard.getBoundingClientRect();
+    rect = PlayerGameBoard.getBoundingClientRect();
     gbLeft = rect.left + window.scrollX;
     gbTop = rect.top + window.scrollY;
 
@@ -146,31 +145,29 @@ function resizeEverything(){
 
 function initializeGameBoard(){
     // Create the gameBoard div
-    GameBoard=document.createElement("div");   // Create a <button> element;
-    GameBoard.id = "GameBoard";
+    PlayerGameBoard=document.createElement("div");   // Create a <button> element;
+    PlayerGameBoard.id = "PlayerGameBoard";
     GameBoardContainer=document.getElementById("GameBoardContainer");
-    GameBoardContainer.appendChild(GameBoard);
+    GameBoardContainer.appendChild(PlayerGameBoard);
 
-    rect = GameBoard.getBoundingClientRect();
+    rect = PlayerGameBoard.getBoundingClientRect();
     gbLeft = rect.left + window.scrollX;
     gbTop = rect.top + window.scrollY;
-    GameBoard.style.width=(gameBoardSizeY+1)*gameScale+"px";
-    GameBoard.style.height=(gameBoardSizeX+1)*gameScale+"px";
+    PlayerGameBoard.style.width=(gameBoardSizeY+1)*gameScale+"px";
+    PlayerGameBoard.style.height=(gameBoardSizeX+1)*gameScale+"px";
 
 
-    GameBoardContainer.addEventListener('mousedown', function(event){dragStart(event)}, false);
-    GameBoardContainer.addEventListener('mouseup', function(event){dragEnd(event)}, false);
-    GameBoardContainer.addEventListener('mousemove', function(event){drag(event)}, false);
+    PlayerGameBoard.addEventListener('mousedown', function(event){dragStart(event)}, false);
+    PlayerGameBoard.addEventListener('mouseup', function(event){dragEnd(event)}, false);
+    PlayerGameBoard.addEventListener('mousemove', function(event){drag(event)}, false);
 
-    GameBoardContainer.addEventListener('touchstart', function(event){dragStart(event)}, false);
-    GameBoardContainer.addEventListener('touchend', function(event){dragEnd(event)}, false);
-    GameBoardContainer.addEventListener('touchmove', function(event){drag(event)}, false);
+    PlayerGameBoard.addEventListener('touchstart', function(event){dragStart(event)}, false);
+    PlayerGameBoard.addEventListener('touchend', function(event){dragEnd(event)}, false);
+    PlayerGameBoard.addEventListener('touchmove', function(event){drag(event)}, false);
     document.onkeydown = function (e) {
-        // console.log(e);
         e = e || window.event;
         if(Ship.dragItem) {
             if (e.key === "Shift") {
-                console.log("Shift pressed");
                 Ship.dragItem.rotate(e);
                 Ship.dragItem.rotateKey = !Ship.dragItem.rotateKey;
             }
@@ -198,7 +195,7 @@ function initializeGameBoard(){
                 gridBox.className = "gameGridBox";
             }
             gameBoardArray[x][y] = gridBox;
-            document.getElementById("GameBoard").appendChild(gridBox);
+            PlayerGameBoard.appendChild(gridBox);
         }
     }
 }
@@ -254,7 +251,6 @@ class Ship {
                 if(validSpot) {
                     elemUnder.style.backgroundColor="red";
                     me.move(elemUnder);
-                    console.log("moved to elemUnder");
                 }else{
                     me.move(me.lastLocation,me.lastDirection);
                 }
@@ -262,7 +258,7 @@ class Ship {
             }, false);
         this.orient();
         Ship.playerShips.push(this);
-        GameBoardContainer.appendChild(this.element);
+        PlayerGameBoard.appendChild(this.element);
     }
     orient(e){
         let tx=initialX;
@@ -277,10 +273,6 @@ class Ship {
             this.height = Number(gameScale-2);
             setTranslate(Ship.mouseX - Ship.relMouseY, Ship.mouseY - Ship.relMouseX, this.element);
         }
-        console.log(Ship.mouseX + ", " + Ship.mouseY);
-        console.log("Setting X:"+this.element.style.left);
-        console.log("Setting Y:"+this.element.style.top);
-
         this.element.style.height = this.height+'px';
         this.element.style.width = this.width+'px';
         this.element.style.lineHeight = this.element.style.height;
@@ -290,7 +282,6 @@ class Ship {
         if (!this.rotateKey) {
             this.lastDirection=this.direction;
             this.direction = !this.direction;
-            // console.log(this.direction);
             this.rotateKey=true;
             this.rotated=!this.rotated;
             this.orient(e);
@@ -300,6 +291,7 @@ class Ship {
         if (dir !== undefined){this.direction = dir;}
         if (locationID === undefined){locationID = this.lastLocation}
         this.lastLocation = locationID;
+        this.lastDirection=this.direction;
 
         this.orient();
         //Set the location of the ship
@@ -327,9 +319,8 @@ class Ship {
 
 
     static fire(location){
-        let fireY = location.split("")[0].charCodeAt(0)-64;
+        let fireY = location.split("")[0].toUpperCase().charCodeAt(0)-64;
         let fireX = location.split("")[1];
-        console.log(fireY + ", " + fireX);
         if(enemyBoardArray[fireY][fireX]!==undefined){
             console.log(EnemyShip.enemyShips[enemyBoardArray[fireY][fireX]].hit(location));
             return true;
@@ -343,11 +334,11 @@ class Ship {
 
 initializeGameBoard();
 
-//Create the 5 random ships of varying sizes
-// for(let i=0;i<5;i++){
-//     new Ship(i+1);
-//     (Ship.playerShips[i]).move("A"+(i+1),true);
-// }
+// Create the 5 random ships of varying sizes
+for(let i=0;i<5;i++){
+    new Ship(i+1);
+    (Ship.playerShips[i]).move("A"+(i+1),true);
+}
 
 
 resizeEverything();
