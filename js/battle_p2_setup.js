@@ -26,6 +26,7 @@ var shipHead;
 var batCounter = 0;
 var shotLog = [];
 var copyBoard = [];
+var p2TargetBoard=[];
 var score = 0;
 
 // fuction to create board array.
@@ -49,6 +50,7 @@ function arrayBuilder(item, index, array) {
         // console.log(x); //debug
         boardArray.push(x);
         copyBoard.push(x);
+        p2TargetBoard.push(x);
     }
 }
 
@@ -325,27 +327,29 @@ p2Ships.forEach(p2BoardSetup);
 
 //********************************* p2 board setup complete *************************//
 
-// board array seperated into rows and columns
-// not working, the way I want.
-/*function arrSepAndDisp() {
-    var copBoardArr = boardArray;
-    var i = 9;
+//********************************* p2 firing mechanism *****************************//
 
-    while (i < 100){
-        copBoardArr[i] += "\n";
-        i = i+10;
-    }
-    copBoardArr.forEach(function (item, inx, ray) {
-        if(typeof (item) == "undefined" || item==="undefined"){
-            ray[inx] = "xx";
+var hit= false;
+var lastcoord = '';
+
+function p2Firing(hit) {
+    if (hit){
+        // if hit is true then add or 1 to find an adecent square
+
+
+    }else{
+        // if hit is false, select a random coord to fire on.
+        var coord = randoCoordinate();
+        while (!p2TargetBoard.includes(coord)){
+            coord = randoCoordinate();
         }
+        return coord;
 
-    });
-
-    var strBoard = copBoardArr.join(",");
-    console.log(strBoard);
+    }
 }
-*/
+
+
+//****************************** p1 firing mechanism ********************************//
 
 function firingPrompt() {
     wait(2000);
