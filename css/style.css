@@ -8,6 +8,7 @@ body{
     left: 0;
     height: 100%;
     width: 100%;
+    user-select: none;
 }
 
 #GameBoardContainer {
@@ -16,7 +17,7 @@ body{
     touch-action: none;
 }
 
-#GameBoard {
+#PlayerGameBoard {
     margin-left: auto;
     margin-right: auto;
     background-color: red;
@@ -41,4 +42,5 @@ body{
 }
 .organizerGridBox{
     background-color: greenyellow;
+    text-align:center;
 }
