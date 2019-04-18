@@ -5,6 +5,8 @@ let randomN = (function (n) {
     return Math.floor((Math.random() * n) + 1)
 });
 
+
+
 class EnemyShip {
     constructor(type) {
         this.id = EnemyShip.incrementId();
@@ -126,14 +128,15 @@ class EnemyShip {
         return success;
     }
 
-    static fire(location){
+    static fire(){
+        let location = p2Firing(false);
         let fireY = location.split("")[0].toUpperCase().charCodeAt(0)-64;
         let fireX = location.split("")[1];
         if(playerBoardArray[fireY][fireX]!==undefined){
             console.log(Ship.playerShips[playerBoardArray[fireY][fireX]].hit(location));
             return true;
         }else{
-            console.log("Miss!");
+            console.log(location + " Miss!");
         }
     }
     //Auto generate an ID for the ship
