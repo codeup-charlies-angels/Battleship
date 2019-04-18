@@ -1,26 +1,158 @@
+/**{*/
+    /*box-sizing:border-box;*/
+/*}*/
+/*body{*/
+    /*display: table;*/
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*height: 100%;*/
+    /*width: 100%;*/
+    /*background-color: lightslategray;*/
+/*}*/
+/*.gameTopBar {*/
+    /*overflow: hidden;*/
+    /*position: absolute;*/
+    /*width: 100%;*/
+    /*text-align: center;*/
+/*}*/
+
+/*.gameTopBar a {*/
+    /*display: block;*/
+    /*color: black;*/
+    /*text-decoration: none;*/
+    /*font-size: 2rem;*/
+/*}*/
+
+/*#logoTop{*/
+    /*display: block;*/
+    /*width: 100%;*/
+    /*margin: 0;*/
+    /*border-bottom: 5px solid black;*/
+/*}*/
+/*.playerSide{*/
+    /*float: left;*/
+    /*margin-left: 2rem;*/
+    /*border-bottom: 2px black solid;*/
+/*}*/
+/*.oppSide{*/
+    /*float: right;*/
+    /*margin-right: 2rem;*/
+    /*border-bottom: 2px black solid;*/
+/*}*/
+
+
+/*!*------------------*!*/
+/*!*.gameTopBar a:hover {*!*/
+    /*!*background-color: #ddd;*!*/
+    /*!*color: black;*!*/
+/*!*}*!*/
+/*!*------------------*!*/
+
+
+
+/*.active {*/
+    /*background-color: #4CAF50;*/
+    /*color: white;*/
+/*}*/
+
+
+
+/*!*------------------*!*/
+/*!*#boardDiv{*!*/
+    /*!*display: block;*!*/
+    /*!*position: absolute;*!*/
+    /*!*margin-left: 12%;*!*/
+    /*!*margin-top: 5%;*!*/
+/*!*}*!*/
+/*!*--------------------*!*/
+
+
+
+/*#GameBoardContainer {*/
+    /*display: table-cell;*/
+    /*vertical-align: middle;*/
+    /*margin-top: 1rem;*/
+    /*touch-action: none;*/
+/*}*/
+
+/*#GameBoard {*/
+    /*margin-top: 25%;*/
+    /*margin-left: auto;*/
+    /*margin-right: auto;*/
+    /*!*whatever width you want*!*/
+/*}*/
+/*.GamePiece_Ship{*/
+    /*z-index:100;*/
+    /*position: absolute;*/
+    /*!*background-image: url('/ShipLG.png');*!*/
+    /*background-color: grey;*/
+    /*text-align:center;*/
+    /*touch-action: none;*/
+    /*user-select: none;*/
+    /*!*transition:all 0.5s ease;*!*/
+/*}*/
+/*.gameGridBox, .organizerGridBox{*/
+    /*position:absolute;*/
+    /*z-index: 1;*/
+    /*border:1px solid black;*/
+/*}*/
+/*.gameGridBox{*/
+    /*background-color: lightseagreen;*/
+/*}*/
+/*.organizerGridBox{*/
+    /*background-color: greenyellow;*/
+/*}*/
+
+
 *{
     box-sizing:border-box;
 }
-#GameBoardContainer{
+body{
+    display: table;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    user-select: none;
+}
+
+#GameBoardContainer {
+    display: table-cell;
+    vertical-align: middle;
+    touch-action: none;
+}
+#GameBoardContainer2 {
+    display: table-cell;
+    vertical-align: middle;
+    touch-action: none;
+}
+
+#PlayerGameBoard {
+    margin-left: auto;
+    margin-right: auto;
     background-color: red;
-    height:550px;
-    width:550px;
+    /*whatever width you want*/
 }
 .GamePiece_Ship{
     z-index:100;
     position:absolute;
     background-color:lightgreen;
     text-align:center;
-    transition:all 0.5s ease;
+    touch-action: none;
+    user-select: none;
+    /*transition:all 0.5s ease;*/
 }
-#GameBoard{
-    background-color: red;
-    text-align:center;
-}
-#GameBoard .col{
+.gameGridBox, .organizerGridBox{
+    position:absolute;
+    z-index: 1;
     border:1px solid black;
 }
-.row, #AlphabetCol .row .col{
+.gameGridBox{
+    background-color:royalblue;
+}
+.organizerGridBox{
+    background-color: greenyellow;
     text-align:center;
-    height:50px;
 }
