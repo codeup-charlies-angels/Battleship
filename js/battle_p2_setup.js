@@ -334,8 +334,38 @@ var lastcoord = '';
 
 function p2Firing(hit) {
     if (hit){
-        // if hit is true then add or 1 to find an adecent square
+        // if hit is true then add or 1 to find an adjecent square
+        var y = lastcoord.charAt(0);
+        var x = lastcoord.charAt(1) + lastcoord.charAt(2);
+        var yNum= rowAlphaToNum(y);
+        switch (random2) {
+            case 0 :
 
+                switch (random2) {
+                    case 0 :
+                        x++;
+                        break;
+                    case 1:
+                        x--;
+                        break;
+                }
+                break;
+            case 1:
+                switch (random2){
+                    case 0 :
+                        yNum++;
+                        break;
+                    case 1:
+                        yNum--;
+                        break;
+                }
+                break;
+            default:
+                x++
+        }
+
+        y = rowNumToAlpha(yNum);
+        coord = y + x;
 
     }else{
         // if hit is false, select a random coord to fire on.
@@ -343,9 +373,10 @@ function p2Firing(hit) {
         while (!p2TargetBoard.includes(coord)){
             coord = randoCoordinate();
         }
-        return coord;
+
 
     }
+    return coord;
 }
 
 
