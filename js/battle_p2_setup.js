@@ -19,19 +19,28 @@ var p2sub = [1, 4];          // size, how many times it can be placed.
 var random2 = (function () {
     return Math.floor(Math.random() * 2)
 }); //randomizer for vertical or horizontal placement
-var random10 = (function () {
-    return Math.floor((Math.random() * 10) + 1)
+var randomX = (function (x) {
+    return Math.floor((Math.random() * x) + 1)
 });
 var shipHead;
 var batCounter = 0;
 var shotLog = [];
 var copyBoard = [];
+var p2TargetBoard=[];
 var score = 0;
 
 // fuction to create board array.
 
 var rows = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
 
+
+function wait(ms)
+{
+    var d = new Date();
+    var d2 = null;
+    do { d2 = new Date(); }
+    while(d2-d < ms);
+}
 
 function arrayBuilder(item, index, array) {
     for (var i = 1; i < 11; i++) {
@@ -40,13 +49,13 @@ function arrayBuilder(item, index, array) {
         x = x.toUpperCase();
         // console.log(x); //debug
         boardArray.push(x);
+        copyBoard.push(x);
+        p2TargetBoard.push(x);
     }
 }
 
 // creates an array with all the coordinate combinations for game grid.
-rows.forEach(arrayBuilder)
-copyBoard = boardArray;
-
+rows.forEach(arrayBuilder);
 // find row
 function findRow() {
     //change random int to a corresponding letter
@@ -318,38 +327,80 @@ p2Ships.forEach(p2BoardSetup);
 
 //********************************* p2 board setup complete *************************//
 
-// board array seperated into rows and columns
-// not working, the way I want.
-/*function arrSepAndDisp() {
-    var copBoardArr = boardArray;
-    var i = 9;
+//********************************* p2 firing mechanism *****************************//
 
-    while (i < 100){
-        copBoardArr[i] += "\n";
-        i = i+10;
-    }
-    copBoardArr.forEach(function (item, inx, ray) {
-        if(typeof (item) == "undefined" || item==="undefined"){
-            ray[inx] = "xx";
+var hit= false;
+var lastcoord = '';
+
+function p2Firing(hit) {
+    if (hit){
+        // if hit is true then add or 1 to find an adjecent square
+        var y = lastcoord.charAt(0);
+        var x = lastcoord.charAt(1) + lastcoord.charAt(2);
+        var yNum= rowAlphaToNum(y);
+        switch (random2) {
+            case 0 :
+
+                switch (random2) {
+                    case 0 :
+                        x++;
+                        break;
+                    case 1:
+                        x--;
+                        break;
+                }
+                break;
+            case 1:
+                switch (random2){
+                    case 0 :
+                        yNum++;
+                        break;
+                    case 1:
+                        yNum--;
+                        break;
+                }
+                break;
+            default:
+                x++
         }
 
-    });
+        y = rowNumToAlpha(yNum);
+        coord = y + x;
 
-    var strBoard = copBoardArr.join(",");
-    console.log(strBoard);
+    }else{
+        // if hit is false, select a random coord to fire on.
+        var coord = randoCoordinate();
+        while (!p2TargetBoard.includes(coord)){
+            coord = randoCoordinate();
+        }
+
+
+    }
+    return coord;
 }
-*/
+
+
+//****************************** p1 firing mechanism ********************************//
 
 function firingPrompt() {
+    wait(2000);
     var target = prompt("Enter firing Coordinates");
-
-    // // while   (!(copyBoard.includes(target))){
-    //      //target = prompt("Enter firing Coordinates");
-    //      console.log("oust of range");
-    //  //}
-
+    //if (target != null) {
+        target=target.toUpperCase();
+   // }
+     // while   (!(copyBoard.includes(target))){
+     //     target = prompt("Enter firing Coordinates");
+     //     console.log("oust of range");
+     //     alert( target + " is out of range.");
+     // }
+    if(!copyBoard.includes(target)){
+        alert( target + " is out of range.");
+        firingPrompt();
+        return target;
+    }
 
     p1Target(target);
+    firingPrompt();
     return target;
 
 }
@@ -361,14 +412,17 @@ function p1Target(coord) {
     let response = false;
     if (shotLog.includes(coord)) {
         console.log("You have already fired on this grid.");
+        alert("You have already fired on this grid.");
         response = true;
     } else if (boardArray.includes(coord)) {
         shotLog.push(coord);
         console.log("That is a miss, you hit open water.");
+        alert("That is a miss, you hit open water.");
         response = true;
     } else {
         shotLog.push(coord);
         console.log("that's a confirmed hit!!!");
+        alert("that's a confirmed hit!!!");
         score += 1;
         response = true;
     }
@@ -381,4 +435,4 @@ function p1Target(coord) {
 }
 
 
-//firingPrompt();
+firingPrompt();
