@@ -26,7 +26,7 @@ body{
 .GamePiece_Ship{
     z-index:100;
     position:absolute;
-    background-color:lightgreen;
+    /*background-color:lightgreen;*/
     text-align:center;
     touch-action: none;
     user-select: none;
