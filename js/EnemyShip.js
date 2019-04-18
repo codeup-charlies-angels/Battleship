@@ -88,7 +88,7 @@ class EnemyShip {
         this.liveBlocks.splice(this.liveBlocks.indexOf(location), 1);
         if (this.liveBlocks.length===0){
             EnemyShip.enemyShips.splice(EnemyShip.enemyShips.indexOf(this), 1);
-            Ship.playerShips[this.id].element.style.backgroundColor="red";
+            // Ship.playerShips[this.id].element.style.backgroundColor="red";
             return "You sunk my "+this.type+"!";
         }else{
             return "Hit!";
@@ -124,9 +124,18 @@ class EnemyShip {
         }
         EnemyShip.successfulGen =success;
         return success;
-
     }
 
+    static fire(location){
+        let fireY = location.split("")[0].toUpperCase().charCodeAt(0)-64;
+        let fireX = location.split("")[1];
+        if(playerBoardArray[fireY][fireX]!==undefined){
+            console.log(Ship.playerShips[playerBoardArray[fireY][fireX]].hit(location));
+            return true;
+        }else{
+            console.log("Miss!");
+        }
+    }
     //Auto generate an ID for the ship
     static incrementId() {
         if (this.latestId == null) this.latestId = 0;

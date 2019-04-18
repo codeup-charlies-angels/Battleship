@@ -25,6 +25,7 @@ let yOffset = 0;
 let PlayerGameBoard;
 let GameBoardContainer;
 let gameBoardArray=createArray(gameBoardSizeX+1,gameBoardSizeY+1);
+let playerBoardArray;
 //
 //
 // Useful functions
@@ -201,64 +202,86 @@ function initializeGameBoard(){
 }
 
 class Ship {
-    constructor(length) {
+    constructor(type) {
         this.id = Ship.incrementId();
-        this.length = length;
+        this.length;
+        this.type=type;
         this.direction = true;
         this.lastDirection=this.direction;
         this.lastLocation=null;
-
+        this.hueShift=0;
         this.rotated=false;
+        this.liveBlocks=[];
         this.rotateKey = false;
 
         // Auto run on create
-        this.element=document.createElement("div");   // Create a <button> element;
-
+        this.element=document.createElement("img");   // Create a <button> element;
         this.element.id = "Ship" + this.id;
         this.element.className = "GamePiece_Ship";
         this.element.textContent = this.id;
-        let me=this;
-        this.element.addEventListener('mousedown', function(event){
-                Ship.dragItem=me;
-                me.element.style.transition ="none";
-            }, false);
-        this.element.addEventListener('mouseup', function(event){
-                me.element.style.zIndex="100";
-                Ship.dragItem=undefined;
-                me.element.style.transition ="0.2s ease";
-                me.element.style.transitionProperty ="top, left";
-
-                let drect = me.element.getBoundingClientRect();
-                let x;
-                let y;
-                x = initialX - (gameScale / 2); //x position within the element.
-                y = initialY - (gameScale / 2);
-                me.element.style.visibility="hidden";
-                let validSpot=true;
-                let elemUnder = document.elementFromPoint(Ship.mouseX-x ,Ship.mouseY-y);
-                for(let ci=0;ci<me.length;ci++){
-                    let chkBlock;
-                    if (me.direction) {
-                        chkBlock = document.elementFromPoint(Ship.mouseX - x, Ship.mouseY - y + (ci * gameScale));
-                    }else{
-                        chkBlock = document.elementFromPoint(Ship.mouseX - x + (ci * gameScale), Ship.mouseY - y);
-                    }
-                    if (chkBlock.className.indexOf("gameGridBox") ===-1){
-                        validSpot=false;
-                        break;
-                    }
-                }
-                if(validSpot) {
-                    elemUnder.style.backgroundColor="red";
-                    me.move(elemUnder);
-                }else{
-                    me.move(me.lastLocation,me.lastDirection);
-                }
-                me.element.style.visibility="visible";
-            }, false);
+        this.addEventListeners();
         this.orient();
         Ship.playerShips.push(this);
         PlayerGameBoard.appendChild(this.element);
+
+        switch(this.type.toLowerCase()){
+            case "carrier":
+                this.length=5;
+                break;
+            case "battleship":
+                this.length=4;
+                break;
+            case "submarine":
+                this.length=3;
+                break;
+            case "cruiser":
+                this.length=3;
+                break;
+            case "destroyer":
+                this.length=2;
+                break;
+        }
+    }
+    addEventListeners(){
+        let me=this;
+        this.element.addEventListener('mousedown', function(event){
+            Ship.dragItem=me;
+            me.element.style.transition ="none";
+        }, false);
+        this.element.addEventListener('mouseup', function(event){
+            me.element.style.zIndex="100";
+            Ship.dragItem=undefined;
+            me.element.style.transition ="0.2s ease";
+            me.element.style.transitionProperty ="top, left";
+
+            let drect = me.element.getBoundingClientRect();
+            let x;
+            let y;
+            x = initialX - (gameScale / 2); //x position within the element.
+            y = initialY - (gameScale / 2);
+            me.element.style.visibility="hidden";
+            let validSpot=true;
+            let elemUnder = document.elementFromPoint(Ship.mouseX-x ,Ship.mouseY-y);
+            for(let ci=0;ci<me.length;ci++){
+                let chkBlock;
+                if (me.direction) {
+                    chkBlock = document.elementFromPoint(Ship.mouseX - x, Ship.mouseY - y + (ci * gameScale));
+                }else{
+                    chkBlock = document.elementFromPoint(Ship.mouseX - x + (ci * gameScale), Ship.mouseY - y);
+                }
+                if (chkBlock.className.indexOf("gameGridBox") ===-1){
+                    validSpot=false;
+                    break;
+                }
+            }
+            if(validSpot) {
+                elemUnder.style.backgroundColor="red";
+                me.move(elemUnder);
+            }else{
+                me.move(me.lastLocation,me.lastDirection);
+            }
+            me.element.style.visibility="visible";
+        }, false);
     }
     orient(e){
         let tx=initialX;
@@ -267,10 +290,16 @@ class Ship {
         if (this.direction) {
             this.height = Number((gameScale * this.length)-2);
             this.width = Number(gameScale-2);
+
+            this.element.src="img/image2.png";
+
             setTranslate(Ship.mouseX - Ship.relMouseX, Ship.mouseY - Ship.relMouseY, this.element);
         } else {
             this.width = Number((gameScale * this.length)-2);
             this.height = Number(gameScale-2);
+
+            this.element.src="img/image.png";
+
             setTranslate(Ship.mouseX - Ship.relMouseY, Ship.mouseY - Ship.relMouseX, this.element);
         }
         this.element.style.height = this.height+'px';
@@ -303,7 +332,65 @@ class Ship {
         this.element.style.left = (loc.left + 1) + 'px';
         this.element.style.lineHeight = this.element.style.height;
     }
+    color(colorName,hue=0){
+        this.element = Pixastic.process(this.element, "hsl", {hue:-this.hueShift,saturation:-20,lightness:0});
+        if (colorName !==undefined) {
+            switch (colorName) {
+                case 1:
+                case "purple":
+                    this.hueShift = 70;
+                    break;
+                case 2:
+                case "pink":
+                    this.hueShift = 100;
+                    break;
+                case 3:
+                case "red":
+                    this.hueShift = 150;
+                    break;
+                case 4:
+                case "orange":
+                    this.hueShift = 180;
+                    break;
+                case 5:
+                case "yellow":
+                    this.hueShift = 210;
+                    break;
+                case 6:
+                case "green":
+                    this.hueShift = 260;
+                    break;
+                case 7:
+                case "teal":
+                    this.hueShift = 320;
+                    break;
+                case 8:
+                case "lightblue":
+                    this.hueShift = 340;
+                    break;
+                case 0:
+                default:
+                    this.hueShift = 0;
+                    break;
+            }
+        }else if(hue !== 0){
+            this.hueShift=hue;
+        }
 
+        this.element = Pixastic.process(this.element, "hsl", {hue:this.hueShift,saturation:20,lightness:0});
+        this.addEventListeners();
+    }
+
+    hit(location){
+        this.liveBlocks.splice(this.liveBlocks.indexOf(location), 1);
+        if (this.liveBlocks.length===0){
+            Ship.playerShips[this.id].element.style.backgroundColor="red";
+            Ship.playerShips.splice(Ship.playerShips.indexOf(this), 1);
+            return "You sunk my "+this.type+"!";
+        }else{
+            return "Hit!";
+        }
+    }
     //Class variable to track all ships
     static playerShips = [];
     static dragItem;
@@ -317,7 +404,39 @@ class Ship {
         return this.latestId;
     }
 
+    static finalizeLocations(){
+        Ship.playerShips.forEach(function(ship) {
 
+            let headY = ship.lastLocation.split("")[0].toUpperCase().charCodeAt(0)-64;
+            let headX = ship.lastLocation.split("")[1];
+            for (let i = 0; i < ship.length; i++) {
+                if (ship.direction) {
+                    playerBoardArray[headY + i][headX] = ship.id;
+                    ship.liveBlocks.push("" + String.fromCharCode(headY + i + 64) + headX);
+                } else {
+                    playerBoardArray[headY][headX + i] = ship.id;
+                    ship.liveBlocks.push("" + String.fromCharCode(headY + 64) + (headX + i));
+                }
+            }
+        });
+    }
+    static generatePlayer() {
+        let requestedShips = [
+            "destroyer",
+            "submarine",
+            "cruiser",
+            "battleship",
+            "carrier"
+        ];
+        playerBoardArray=createArray(gameBoardSizeX+1,gameBoardSizeY+1);
+        for(let x=0;x<requestedShips.length;x++){
+            let type = requestedShips[x];
+            new Ship(type);
+            (Ship.playerShips[x]).move("A"+(x+1),true);
+
+        }
+        return;
+    }
     static fire(location){
         let fireY = location.split("")[0].toUpperCase().charCodeAt(0)-64;
         let fireX = location.split("")[1];
@@ -331,15 +450,10 @@ class Ship {
 }
 
 
-
 initializeGameBoard();
 
-// Create the 5 random ships of varying sizes
-for(let i=0;i<5;i++){
-    new Ship(i+1);
-    (Ship.playerShips[i]).move("A"+(i+1),true);
-}
 
+Ship.generatePlayer();
 
 resizeEverything();
 
