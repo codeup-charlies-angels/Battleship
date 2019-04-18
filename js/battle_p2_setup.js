@@ -178,7 +178,7 @@ function rowAlphaToNum(y) {
 // find random coordinates for the head of the ship
 function randoCoordinate() {
     var y = findRow(); //random alpha A-J
-    var x = random10();// random int 1-10
+    var x = randomX(10);// random int 1-10
     shipHead = y + x;
     return shipHead;
 }
@@ -382,7 +382,7 @@ function p2Firing(hit) {
 
 //****************************** p1 firing mechanism ********************************//
 
-function firingPrompt() {
+//function firingPrompt() {
     wait(2000);
     var target = prompt("Enter firing Coordinates");
     //if (target != null) {
