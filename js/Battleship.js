@@ -12,6 +12,7 @@ let gameScale=50;
 let rect;
 let gbLeft;
 let gbTop;
+let positionsFinalized=false;
 
 
 let active = false;
@@ -424,6 +425,7 @@ class Ship {
                 }
             }
         });
+        positionsFinalized = true;
     }
     static generatePlayer() {
         let requestedShips = [
@@ -442,15 +444,38 @@ class Ship {
         }
         return;
     }
+    static checkLive(){
+         var isLive = false;
+        Ship.playerShips.forEach(function(ship){
+            ship.live ? isLive=true : '';
+        });
+        return isLive;
+    }
     static fire(location){
-        let splitLoc = [location.slice(0,1),location.slice(1)];
-        let fireY = splitLoc[0].toUpperCase().charCodeAt(0)-64;
-        let fireX = splitLoc[1];
-        if(enemyBoardArray[fireY][fireX]!==undefined){
-            console.log(EnemyShip.enemyShips[enemyBoardArray[fireY][fireX]].hit(location));
-            return true;
+        if (positionsFinalized) {
+            if (location ===undefined) {
+                var coord;
+                do{
+                    coord = randoCoordinate();
+                } while (!p1TargetBoard.includes(coord));
+                p1TargetBoard.splice(p1TargetBoard.indexOf(coord), 1);
+                location = coord;
+            }
+            let splitLoc = [location.slice(0, 1), location.slice(1)];
+            let fireY = splitLoc[0].toUpperCase().charCodeAt(0) - 64;
+            let fireX = splitLoc[1];
+            if (enemyBoardArray[fireY][fireX] !== undefined) {
+                console.log(EnemyShip.enemyShips[enemyBoardArray[fireY][fireX]].hit(location));
+                if (EnemyShip.checkLive()) {
+                    return true;
+                } else {
+                    console.log("You win!")
+                }
+            } else {
+                console.log("Miss!");
+            }
         }else{
-            console.log("Miss!");
+            console.log("You must finalize positions first!");
         }
     }
 }

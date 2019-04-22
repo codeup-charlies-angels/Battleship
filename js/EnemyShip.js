@@ -128,20 +128,35 @@ class EnemyShip {
         return success;
     }
 
+    static checkLive(){
+        var isLive = false;
+        EnemyShip.enemyShips.forEach(function(ship){
+            ship.live ? isLive=true : '';
+        });
+        return isLive;
+    }
     static fire(){
-        let location = p2Firing(false);
-        document.getElementById(location).style.backgroundColor="orange";
-        let splitLoc = [location.slice(0,1),location.slice(1)];
-        let fireY = splitLoc[0].toUpperCase().charCodeAt(0)-64;
-        let fireX = splitLoc[1];
-        if(playerBoardArray[fireY][fireX]!==null && playerBoardArray[fireY][fireX]!==undefined){
-            var fire = Ship.playerShips[playerBoardArray[fireY][fireX]].hit(location);
-            console.log(fire);
-            playerBoardArray[fireY][fireX]=null;
+        if (positionsFinalized) {
+            let location = p2Firing(false);
+            document.getElementById(location).style.backgroundColor = "orange";
+            let splitLoc = [location.slice(0, 1), location.slice(1)];
+            let fireY = splitLoc[0].toUpperCase().charCodeAt(0) - 64;
+            let fireX = splitLoc[1];
+            if (playerBoardArray[fireY][fireX] !== null && playerBoardArray[fireY][fireX] !== undefined) {
+                var fire = Ship.playerShips[playerBoardArray[fireY][fireX]].hit(location);
+                console.log(fire);
+                playerBoardArray[fireY][fireX] = null;
+                if(Ship.checkLive()) {
+                    return true;
+                }else{
+                    console.log("You lose!")
+                }
 
-            return true;
+            } else {
+                console.log("Miss!");
+            }
         }else{
-            console.log("Miss!");
+            console.log("You must finalize positions first!");
         }
     }
     //Auto generate an ID for the ship

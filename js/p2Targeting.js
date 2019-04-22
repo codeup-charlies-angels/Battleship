@@ -30,6 +30,7 @@ var batCounter = 0;
 var shotLog = [];
 var copyBoard = [];
 var p2TargetBoard=[];
+var p1TargetBoard=[];
 var score = 0;
 
 // fuction to create board array.
@@ -53,6 +54,7 @@ function arrayBuilder(item, index, array) {
         boardArray.push(x);
         copyBoard.push(x);
         p2TargetBoard.push(x);
+        p1TargetBoard.push(x);
     }
 }
 
@@ -338,6 +340,7 @@ function p2Firing(hit) {
     if (hit){
         // if hit is true then add or 1 to find an adjecent square
         var y = lastcoord.charAt(0);
+        var coord;
         var x = lastcoord.charAt(1) + lastcoord.charAt(2);
         var yNum= rowAlphaToNum(y);
         switch (random2) {
@@ -371,10 +374,9 @@ function p2Firing(hit) {
 
     }else{
         // if hit is false, select a random coord to fire on.
-        var coord = randoCoordinate();
-        while (!p2TargetBoard.includes(coord)){
+        do{
             coord = randoCoordinate();
-        }
+        } while (!p2TargetBoard.includes(coord));
         p2TargetBoard.splice(p2TargetBoard.indexOf(coord), 1);
 
 
