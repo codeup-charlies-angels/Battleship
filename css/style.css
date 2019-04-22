@@ -148,7 +148,10 @@ body{
     height: 100%;
     width: 100%;
     user-select: none;
+<<<<<<< HEAD
     background-color: lightslategray;
+=======
+>>>>>>> f8913e4907aedad2196656863009aa09170d2cdb
 }
 
 #GameBoardContainer {
@@ -156,11 +159,14 @@ body{
     vertical-align: middle;
     touch-action: none;
 }
+<<<<<<< HEAD
 #GameBoardContainer2 {
     display: table-cell;
     vertical-align: middle;
     touch-action: none;
 }
+=======
+>>>>>>> f8913e4907aedad2196656863009aa09170d2cdb
 
 #PlayerGameBoard {
     margin-left: auto;
@@ -171,7 +177,11 @@ body{
 .GamePiece_Ship{
     z-index:100;
     position:absolute;
+<<<<<<< HEAD
     background-color:grey;
+=======
+    /*background-color:lightgreen;*/
+>>>>>>> f8913e4907aedad2196656863009aa09170d2cdb
     text-align:center;
     touch-action: none;
     user-select: none;
@@ -183,9 +193,18 @@ body{
     border:1px solid black;
 }
 .gameGridBox{
+<<<<<<< HEAD
     background-color:lightseagreen;
 }
 .organizerGridBox{
     background-color: whitesmoke;
     text-align:center;
 }
+=======
+    background-color:royalblue;
+}
+.organizerGridBox{
+    background-color: greenyellow;
+    text-align:center;
+}
+>>>>>>> f8913e4907aedad2196656863009aa09170d2cdb
