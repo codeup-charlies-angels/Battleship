@@ -337,50 +337,29 @@ var hit= false;
 var lastcoord = '';
 
 function p2Firing(hit) {
-    if (hit){
-        // if hit is true then add or 1 to find an adjecent square
-        var y = lastcoord.charAt(0);
-        var coord;
-        var x = lastcoord.charAt(1) + lastcoord.charAt(2);
-        var yNum= rowAlphaToNum(y);
-        switch (random2) {
-            case 0 :
+    var coord;
+    var attempts=0;
+    do{
+        if(hit && attempts < 10){
+            let splitLoc = [lastcoord.slice(0, 1), lastcoord.slice(1)];
+            let coordY = splitLoc[0].toUpperCase().charCodeAt(0) - 64;
+            let coordX = splitLoc[1];
+            if(random2()){
+                random2() ? coordY++ : coordY--;
+            }else{
+                random2() ? coordX++ : coordX--;
+            }
 
-                switch (random2) {
-                    case 0 :
-                        x++;
-                        break;
-                    case 1:
-                        x--;
-                        break;
-                }
-                break;
-            case 1:
-                switch (random2){
-                    case 0 :
-                        yNum++;
-                        break;
-                    case 1:
-                        yNum--;
-                        break;
-                }
-                break;
-            default:
-                x++
-        }
-
-        y = rowNumToAlpha(yNum);
-        coord = y + x;
-
-    }else{
-        // if hit is false, select a random coord to fire on.
-        do{
+            y = rowNumToAlpha(coordY);
+            coord = y + coordX;
+            attempts++;
+        }else {
             coord = randoCoordinate();
-        } while (!p2TargetBoard.includes(coord));
-        p2TargetBoard.splice(p2TargetBoard.indexOf(coord), 1);
+        }
+    } while (!p2TargetBoard.includes(coord));
+    p2TargetBoard.splice(p2TargetBoard.indexOf(coord), 1);
 
-
-    }
+    lastcoord = coord;
     console.log(coord);
     return coord;
 }
