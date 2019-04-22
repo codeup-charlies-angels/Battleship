@@ -323,7 +323,7 @@ class Ship {
         if (dir !== undefined){this.direction = dir;}
         if (locationID === undefined){locationID = this.lastLocation}
         this.lastLocation = locationID;
-        console.log(this.lastLocation);
+        // console.log(this.lastLocation);
         this.lastDirection=this.direction;
 
         this.orient();
@@ -419,10 +419,10 @@ class Ship {
                 let headX = splitLoc[1];
                 for (let i = 0; i < ship.length; i++) {
                     if (ship.direction) {
-                        playerBoardArray[headY + i][headX] = ship.id;
+                        playerBoardArray[headY + i][+headX] = ship.id;
                         ship.liveBlocks.push("" + String.fromCharCode(headY + i + 64) + headX);
                     } else {
-                        playerBoardArray[headY][headX + i] = ship.id;
+                        playerBoardArray[headY][+headX + i] = ship.id;
                         ship.liveBlocks.push("" + String.fromCharCode(headY + 64) + (headX + i));
                     }
                 }

@@ -45,7 +45,7 @@ class EnemyShip {
                 EnemyShip.genFailed=true;
                 return false;
             }
-            console.log("Attempt"+this.id);
+            // console.log("Attempt"+this.id);
             tempEnemyBoardArray=enemyBoardArray;
             this.liveBlocks=[];
             randDir = Boolean(Math.round(Math.random()));
@@ -57,11 +57,11 @@ class EnemyShip {
                 randX = randomN(10-this.length+1);
             }
             let freeSpot=true;
-            console.log(typeof tempEnemyBoardArray[randX][randY]);
+            // console.log(typeof tempEnemyBoardArray[randX][randY]);
             for(let i=0;i<this.length;i++){
                 if(randDir){
                     if(tempEnemyBoardArray[randY+i][randX] !== undefined){
-                        console.log(randY+","+randX+" is not empty!");
+                        // console.log(randY+","+randX+" is not empty!");
                         freeSpot=false;
                         break;
                     }
@@ -69,7 +69,7 @@ class EnemyShip {
                     this.liveBlocks.push(""+String.fromCharCode(randY+i + 64) + randX);
                 }else{
                     if(tempEnemyBoardArray[randY][randX+i] !== undefined){
-                        console.log(randY+","+randX+" is not empty!");
+                        // console.log(randY+","+randX+" is not empty!");
                         freeSpot=false;
                         break;
                     }
@@ -118,7 +118,7 @@ class EnemyShip {
         for(let x=0;x<requestedShips.length;x++){
             let type = requestedShips[x];
             if (!EnemyShip.genFailed) {
-                console.log("Generating new "+type);
+                // console.log("Generating new "+type);
                 new EnemyShip(type);
             }else{
                 success=false;
