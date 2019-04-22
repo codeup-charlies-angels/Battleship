@@ -13,7 +13,8 @@ let rect;
 let gbLeft;
 let gbTop;
 let positionsFinalized=false;
-
+let gameActive=true;
+let gameWon=false;
 
 let active = false;
 let currentX = undefined;
@@ -471,6 +472,9 @@ class Ship {
                 if (EnemyShip.checkLive()) {
                     return true;
                 } else {
+                    gameWon=true;
+                    gameActive=false;
+                    handleGameOver();
                     console.log("You win!")
                 }
             } else {
