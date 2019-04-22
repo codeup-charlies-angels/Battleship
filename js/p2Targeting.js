@@ -375,6 +375,7 @@ function p2Firing(hit) {
         while (!p2TargetBoard.includes(coord)){
             coord = randoCoordinate();
         }
+        p2TargetBoard.splice(p2TargetBoard.indexOf(coord), 1);
 
 
     }

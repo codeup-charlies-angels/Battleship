@@ -210,6 +210,7 @@ class Ship {
         this.lastDirection=this.direction;
         this.lastLocation=null;
         this.hueShift=0;
+        this.live=true;
         this.rotated=false;
         this.liveBlocks=[];
         this.rotateKey = false;
@@ -386,8 +387,8 @@ class Ship {
         document.getElementById(location).style.backgroundColor = "red";
         this.liveBlocks.splice(this.liveBlocks.indexOf(location), 1);
         if (this.liveBlocks.length === 0) {
-            Ship.playerShips[this.id].element.style.backgroundColor = "red";
-            Ship.playerShips.splice(Ship.playerShips.indexOf(this), 1);
+            Ship.playerShips[this.id].element.style.backgroundColor = "black";
+            this.live=false;
             return "You sunk my " + this.type + "!";
         } else {
             return "Hit!";
@@ -410,9 +411,9 @@ class Ship {
         Ship.playerShips.forEach(function(ship) {
             ship.element.removeEventListener('mousedown', ship.shipMouseDown, false);
             ship.element.removeEventListener('mouseup', ship.shipMouseUp, false);
-
-            let headY = ship.lastLocation.split("")[0].toUpperCase().charCodeAt(0)-64;
-            let headX = ship.lastLocation.split("")[1];
+            let splitLoc = [ship.lastLocation.slice(0,1),ship.lastLocation.slice(1)];
+            let headY = splitLoc[0].toUpperCase().charCodeAt(0)-64;
+            let headX = splitLoc[1];
             for (let i = 0; i < ship.length; i++) {
                 if (ship.direction) {
                     playerBoardArray[headY + i][headX] = ship.id;
@@ -442,8 +443,9 @@ class Ship {
         return;
     }
     static fire(location){
-        let fireY = location.split("")[0].toUpperCase().charCodeAt(0)-64;
-        let fireX = location.split("")[1];
+        let splitLoc = [location.slice(0,1),location.slice(1)];
+        let fireY = splitLoc[0].toUpperCase().charCodeAt(0)-64;
+        let fireX = splitLoc[1];
         if(enemyBoardArray[fireY][fireX]!==undefined){
             console.log(EnemyShip.enemyShips[enemyBoardArray[fireY][fireX]].hit(location));
             return true;

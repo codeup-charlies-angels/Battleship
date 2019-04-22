@@ -131,8 +131,9 @@ class EnemyShip {
     static fire(){
         let location = p2Firing(false);
         document.getElementById(location).style.backgroundColor="orange";
-        let fireY = location.split("")[0].toUpperCase().charCodeAt(0)-64;
-        let fireX = location.split("")[1];
+        let splitLoc = [location.slice(0,1),location.slice(1)];
+        let fireY = splitLoc[0].toUpperCase().charCodeAt(0)-64;
+        let fireX = splitLoc[1];
         if(playerBoardArray[fireY][fireX]!==null && playerBoardArray[fireY][fireX]!==undefined){
             var fire = Ship.playerShips[playerBoardArray[fireY][fireX]].hit(location);
             console.log(fire);
