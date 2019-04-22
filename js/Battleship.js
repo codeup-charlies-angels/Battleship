@@ -243,12 +243,12 @@ class Ship {
         }
     }
     addEventListeners(){
-        let me=this;
-        this.element.addEventListener('mousedown', function(event){
+        let me = this;
+        this.element.addEventListener('mousedown', this.shipMouseDown = function(event){
             Ship.dragItem=me;
             me.element.style.transition ="none";
         }, false);
-        this.element.addEventListener('mouseup', function(event){
+        this.element.addEventListener('mouseup', this.shipMouseUp = function(event){
             me.element.style.zIndex="100";
             Ship.dragItem=undefined;
             me.element.style.transition ="0.2s ease";
@@ -275,8 +275,8 @@ class Ship {
                 }
             }
             if(validSpot) {
-                elemUnder.style.backgroundColor="red";
-                me.move(elemUnder);
+                //elemUnder.style.backgroundColor="red";
+                me.move(elemUnder.id);
             }else{
                 me.move(me.lastLocation,me.lastDirection);
             }
@@ -320,6 +320,7 @@ class Ship {
         if (dir !== undefined){this.direction = dir;}
         if (locationID === undefined){locationID = this.lastLocation}
         this.lastLocation = locationID;
+        console.log(this.lastLocation);
         this.lastDirection=this.direction;
 
         this.orient();
@@ -381,13 +382,14 @@ class Ship {
         this.addEventListeners();
     }
 
-    hit(location){
+    hit(location) {
+        document.getElementById(location).style.backgroundColor = "red";
         this.liveBlocks.splice(this.liveBlocks.indexOf(location), 1);
-        if (this.liveBlocks.length===0){
-            Ship.playerShips[this.id].element.style.backgroundColor="red";
+        if (this.liveBlocks.length === 0) {
+            Ship.playerShips[this.id].element.style.backgroundColor = "red";
             Ship.playerShips.splice(Ship.playerShips.indexOf(this), 1);
-            return "You sunk my "+this.type+"!";
-        }else{
+            return "You sunk my " + this.type + "!";
+        } else {
             return "Hit!";
         }
     }
@@ -406,6 +408,8 @@ class Ship {
 
     static finalizeLocations(){
         Ship.playerShips.forEach(function(ship) {
+            ship.element.removeEventListener('mousedown', ship.shipMouseDown, false);
+            ship.element.removeEventListener('mouseup', ship.shipMouseUp, false);
 
             let headY = ship.lastLocation.split("")[0].toUpperCase().charCodeAt(0)-64;
             let headX = ship.lastLocation.split("")[1];
