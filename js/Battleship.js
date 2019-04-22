@@ -112,10 +112,10 @@ function resizeEverything(){
 
     gameScale = ((window.innerHeight/15));
     // gameScale=50;
-    let lt = document.getElementById("leftcont"); //board position fix
-    lt.style.paddingLeft=(window.innerWidth/2)-(((gameBoardSizeX+1)*gameScale))+"px";
-    // let rt = document.getElementById("rightcont"); //board position fix
-    // rt.style.paddingLeft=(window.innerWidth/2)-(((gameBoardSizeX+2)*gameScale))+"px";
+    let lt = document.getElementById(“leftcont”); //board position fix
+    lt.style.paddingLeft=(window.innerWidth/2)-(((gameBoardSizeX+1)*gameScale))+“px”;
+    // let rt = document.getElementById(“rightcont”); //board position fix
+    // rt.style.paddingLeft=(window.innerWidth/2)-(((gameBoardSizeX+2)*gameScale))+“px”;
 
     PlayerGameBoard.style.width=(gameBoardSizeX+1)*gameScale+"px";
     PlayerGameBoard.style.height=(gameBoardSizeY+1)*gameScale+"px";
@@ -195,7 +195,7 @@ function initializeGameBoard(){
                     gridBox.textContent=""+String.fromCharCode(y + 64);
                 }
                 if (y===0&&x===0){
-                     gridBox.style.backgroundColor="orange";
+                    gridBox.style.backgroundColor="orange";
                 }
             }else {
                 gridBox.id = "" + String.fromCharCode(y + 64) + x;
@@ -268,13 +268,13 @@ class Ship {
             y = initialY - (gameScale / 2);
             me.element.style.visibility="hidden";
             let validSpot=true;
-            let elemUnder = document.elementFromPoint(Ship.mouseX-x-window.scrollX ,Ship.mouseY-y-window.scrollY);
+            let elemUnder = document.elementFromPoint(Ship.mouseX-x ,Ship.mouseY-y);
             for(let ci=0;ci<me.length;ci++){
                 let chkBlock;
                 if (me.direction) {
-                    chkBlock = document.elementFromPoint(Ship.mouseX - x-window.scrollX, Ship.mouseY - y + (ci * gameScale) -window.scrollY);
+                    chkBlock = document.elementFromPoint(Ship.mouseX - x, Ship.mouseY - y + (ci * gameScale));
                 }else{
-                    chkBlock = document.elementFromPoint(Ship.mouseX - x + (ci * gameScale)-window.scrollX, Ship.mouseY - y-window.scrollY);
+                    chkBlock = document.elementFromPoint(Ship.mouseX - x + (ci * gameScale), Ship.mouseY - y);
                 }
                 if (chkBlock.className.indexOf("gameGridBox") ===-1){
                     validSpot=false;
@@ -452,7 +452,7 @@ class Ship {
         return;
     }
     static checkLive(){
-         var isLive = false;
+        var isLive = false;
         Ship.playerShips.forEach(function(ship){
             ship.live ? isLive=true : '';
         });
@@ -493,11 +493,9 @@ class Ship {
 
 initializeGameBoard();
 
+
 Ship.generatePlayer();
 
 resizeEverything();
 
 // })();
-
-
-

@@ -6,7 +6,6 @@ battleship / 4    1
 cruiser /    3    2
 destroyer /  2    3
 submarine /  1    4
-
 */
 
 // global variables. May change to local if not needed globally
@@ -327,51 +326,6 @@ p2Ships.forEach(p2BoardSetup);
 
 //********************************* p2 board setup complete *************************//
 
-let EnemyGameBoard;
-let GameBoardContainer2;
-let enemyGameBoardArray=createArray(gameBoardSizeX+1,gameBoardSizeY+1);
-
-function initializeGameBoard2(){
-    // Create the gameBoard div
-    EnemyGameBoard=document.createElement("div");   // Create a <button> element;
-    EnemyGameBoard.id = "EnemyGameBoard";
-    GameBoardContainer2=document.getElementById("GameBoardContainer2");
-    GameBoardContainer2.appendChild(EnemyGameBoard);
-    console.log("test");
-    rect = EnemyGameBoard.getBoundingClientRect();
-    gbLeft = rect.left + window.scrollX;
-    gbTop = rect.top + window.scrollY;
-    EnemyGameBoard.style.width=(gameBoardSizeY+1)*gameScale+"px";
-    EnemyGameBoard.style.height=(gameBoardSizeX+1)*gameScale+"px";
-
-
-    for(let y=0;y<gameBoardSizeY+1;y++){
-        for (let x=0;x<gameBoardSizeX+1;x++){
-            let gridBox = document.createElement("div");
-            gridBox.style.width = gameScale+"px";
-            gridBox.style.height = gameScale+"px";
-            if (y===0 || x===0){
-                gridBox.className = "organizerGridBox";
-                if (y===0 && x!==0){
-                    gridBox.textContent=""+x;
-                }
-                if (x===0 && y!==0){
-                    gridBox.textContent=""+String.fromCharCode(y + 64);
-                }
-                if (y===0&&x===0){
-                    gridBox.style.backgroundColor="orange";
-                }
-            }else {
-                gridBox.id = "" + String.fromCharCode(y + 64) + x;
-                gridBox.className = "enemyGridBox";
-            }
-            enemyGameBoardArray[x][y] = gridBox;
-            EnemyGameBoard.appendChild(gridBox);
-        }
-    }
-}
-initializeGameBoard2();
-
 //********************************* p2 firing mechanism *****************************//
 
 var hit= false;
@@ -428,25 +382,25 @@ function p2Firing(hit) {
 //****************************** p1 firing mechanism ********************************//
 
 //function firingPrompt() {
-    wait(2000);
-    var target = prompt("Enter firing Coordinates");
-    //if (target != null) {
-        target=target.toUpperCase();
-   // }
-     // while   (!(copyBoard.includes(target))){
-     //     target = prompt("Enter firing Coordinates");
-     //     console.log("oust of range");
-     //     alert( target + " is out of range.");
-     // }
-    if(!copyBoard.includes(target)){
-        alert( target + " is out of range.");
-        firingPrompt();
-        return target;
-    }
-
-    p1Target(target);
+wait(2000);
+var target = prompt("Enter firing Coordinates");
+//if (target != null) {
+target=target.toUpperCase();
+// }
+// while   (!(copyBoard.includes(target))){
+//     target = prompt("Enter firing Coordinates");
+//     console.log("oust of range");
+//     alert( target + " is out of range.");
+// }
+if(!copyBoard.includes(target)){
+    alert( target + " is out of range.");
     firingPrompt();
     return target;
+}
+
+p1Target(target);
+firingPrompt();
+return target;
 
 }
 

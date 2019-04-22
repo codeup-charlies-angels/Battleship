@@ -12,6 +12,7 @@
 *{
     box-sizing:border-box;
 }
+
 body{
     display: table;
     position: absolute;
@@ -22,9 +23,13 @@ body{
     width: 100%;
     user-select: none;
     background-color: lightslategray;
-
 }
 #GameBoardContainer {
+    display: table-cell;
+    vertical-align: middle;
+    touch-action: none;
+}
+#GameBoardContainer2 {
     display: table-cell;
     vertical-align: middle;
     touch-action: none;
@@ -48,8 +53,9 @@ body{
 .GamePiece_Ship{
     z-index:100;
     position:absolute;
-
-text-align:center;
+    background-color:grey;
+    /*background-color:lightgreen;*/
+    text-align:center;
     touch-action: none;
     user-select: none;
     /*transition:all 0.5s ease;*/
@@ -63,7 +69,11 @@ text-align:center;
     background-color:lightseagreen;
 }
 .enemyGridBox{
-    background-color:mediumvioletred;
+    background-color:lightseagreen;
+}
+.organizerGridBox{
+    background-color: whitesmoke;
+    text-align:center;
 }
 .organizerGridBox{
     background-color: whitesmoke;
@@ -73,3 +83,4 @@ text-align:center;
     margin-left: auto;
     margin-right: auto;
 }
+

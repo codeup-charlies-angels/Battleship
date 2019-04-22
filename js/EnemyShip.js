@@ -183,4 +183,4 @@ do{
 // EnemyShip.enemyShips.forEach(function(ship){
 //     new Ship(ship.length);
 //     Ship.playerShips[ship.id].move(ship.liveBlocks[0],ship.direction);
-// });
+// });// });
