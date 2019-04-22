@@ -12,6 +12,7 @@ let gameScale=50;
 let rect;
 let gbLeft;
 let gbTop;
+let positionsFinalized=false;
 
 
 let active = false;
@@ -210,6 +211,7 @@ class Ship {
         this.lastDirection=this.direction;
         this.lastLocation=null;
         this.hueShift=0;
+        this.live=true;
         this.rotated=false;
         this.liveBlocks=[];
         this.rotateKey = false;
@@ -243,12 +245,12 @@ class Ship {
         }
     }
     addEventListeners(){
-        let me=this;
-        this.element.addEventListener('mousedown', function(event){
+        let me = this;
+        this.element.addEventListener('mousedown', this.shipMouseDown = function(event){
             Ship.dragItem=me;
             me.element.style.transition ="none";
         }, false);
-        this.element.addEventListener('mouseup', function(event){
+        this.element.addEventListener('mouseup', this.shipMouseUp = function(event){
             me.element.style.zIndex="100";
             Ship.dragItem=undefined;
             me.element.style.transition ="0.2s ease";
@@ -275,8 +277,8 @@ class Ship {
                 }
             }
             if(validSpot) {
-                elemUnder.style.backgroundColor="red";
-                me.move(elemUnder);
+                //elemUnder.style.backgroundColor="red";
+                me.move(elemUnder.id);
             }else{
                 me.move(me.lastLocation,me.lastDirection);
             }
@@ -320,6 +322,7 @@ class Ship {
         if (dir !== undefined){this.direction = dir;}
         if (locationID === undefined){locationID = this.lastLocation}
         this.lastLocation = locationID;
+        console.log(this.lastLocation);
         this.lastDirection=this.direction;
 
         this.orient();
@@ -381,13 +384,14 @@ class Ship {
         this.addEventListeners();
     }
 
-    hit(location){
+    hit(location) {
+        document.getElementById(location).style.backgroundColor = "red";
         this.liveBlocks.splice(this.liveBlocks.indexOf(location), 1);
-        if (this.liveBlocks.length===0){
-            Ship.playerShips[this.id].element.style.backgroundColor="red";
-            Ship.playerShips.splice(Ship.playerShips.indexOf(this), 1);
-            return "You sunk my "+this.type+"!";
-        }else{
+        if (this.liveBlocks.length === 0) {
+            Ship.playerShips[this.id].element.style.backgroundColor = "black";
+            this.live=false;
+            return "You sunk my " + this.type + "!";
+        } else {
             return "Hit!";
         }
     }
@@ -406,9 +410,11 @@ class Ship {
 
     static finalizeLocations(){
         Ship.playerShips.forEach(function(ship) {
-
-            let headY = ship.lastLocation.split("")[0].toUpperCase().charCodeAt(0)-64;
-            let headX = ship.lastLocation.split("")[1];
+            ship.element.removeEventListener('mousedown', ship.shipMouseDown, false);
+            ship.element.removeEventListener('mouseup', ship.shipMouseUp, false);
+            let splitLoc = [ship.lastLocation.slice(0,1),ship.lastLocation.slice(1)];
+            let headY = splitLoc[0].toUpperCase().charCodeAt(0)-64;
+            let headX = splitLoc[1];
             for (let i = 0; i < ship.length; i++) {
                 if (ship.direction) {
                     playerBoardArray[headY + i][headX] = ship.id;
@@ -419,6 +425,7 @@ class Ship {
                 }
             }
         });
+        positionsFinalized = true;
     }
     static generatePlayer() {
         let requestedShips = [
@@ -437,14 +444,38 @@ class Ship {
         }
         return;
     }
+    static checkLive(){
+         var isLive = false;
+        Ship.playerShips.forEach(function(ship){
+            ship.live ? isLive=true : '';
+        });
+        return isLive;
+    }
     static fire(location){
-        let fireY = location.split("")[0].toUpperCase().charCodeAt(0)-64;
-        let fireX = location.split("")[1];
-        if(enemyBoardArray[fireY][fireX]!==undefined){
-            console.log(EnemyShip.enemyShips[enemyBoardArray[fireY][fireX]].hit(location));
-            return true;
+        if (positionsFinalized) {
+            if (location ===undefined) {
+                var coord;
+                do{
+                    coord = randoCoordinate();
+                } while (!p1TargetBoard.includes(coord));
+                p1TargetBoard.splice(p1TargetBoard.indexOf(coord), 1);
+                location = coord;
+            }
+            let splitLoc = [location.slice(0, 1), location.slice(1)];
+            let fireY = splitLoc[0].toUpperCase().charCodeAt(0) - 64;
+            let fireX = splitLoc[1];
+            if (enemyBoardArray[fireY][fireX] !== undefined) {
+                console.log(EnemyShip.enemyShips[enemyBoardArray[fireY][fireX]].hit(location));
+                if (EnemyShip.checkLive()) {
+                    return true;
+                } else {
+                    console.log("You win!")
+                }
+            } else {
+                console.log("Miss!");
+            }
         }else{
-            console.log("Miss!");
+            console.log("You must finalize positions first!");
         }
     }
 }

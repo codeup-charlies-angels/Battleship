@@ -5,13 +5,12 @@ let randomN = (function (n) {
     return Math.floor((Math.random() * n) + 1)
 });
 
-
-
 class EnemyShip {
     constructor(type) {
         this.id = EnemyShip.incrementId();
         this.length=0;
         this.type=type;
+        this.live=true;
         this.spotChosen=false;
         this.direction = true;
         this.liveBlocks=[];
@@ -89,7 +88,8 @@ class EnemyShip {
     hit(location){
         this.liveBlocks.splice(this.liveBlocks.indexOf(location), 1);
         if (this.liveBlocks.length===0){
-            EnemyShip.enemyShips.splice(EnemyShip.enemyShips.indexOf(this), 1);
+            this.live=false;
+            //EnemyShip.enemyShips.splice(EnemyShip.enemyShips.indexOf(this), 1);
             // Ship.playerShips[this.id].element.style.backgroundColor="red";
             return "You sunk my "+this.type+"!";
         }else{
@@ -128,15 +128,35 @@ class EnemyShip {
         return success;
     }
 
+    static checkLive(){
+        var isLive = false;
+        EnemyShip.enemyShips.forEach(function(ship){
+            ship.live ? isLive=true : '';
+        });
+        return isLive;
+    }
     static fire(){
-        let location = p2Firing(false);
-        let fireY = location.split("")[0].toUpperCase().charCodeAt(0)-64;
-        let fireX = location.split("")[1];
-        if(playerBoardArray[fireY][fireX]!==undefined){
-            console.log(Ship.playerShips[playerBoardArray[fireY][fireX]].hit(location));
-            return true;
+        if (positionsFinalized) {
+            let location = p2Firing(false);
+            document.getElementById(location).style.backgroundColor = "orange";
+            let splitLoc = [location.slice(0, 1), location.slice(1)];
+            let fireY = splitLoc[0].toUpperCase().charCodeAt(0) - 64;
+            let fireX = splitLoc[1];
+            if (playerBoardArray[fireY][fireX] !== null && playerBoardArray[fireY][fireX] !== undefined) {
+                var fire = Ship.playerShips[playerBoardArray[fireY][fireX]].hit(location);
+                console.log(fire);
+                playerBoardArray[fireY][fireX] = null;
+                if(Ship.checkLive()) {
+                    return true;
+                }else{
+                    console.log("You lose!")
+                }
+
+            } else {
+                console.log("Miss!");
+            }
         }else{
-            console.log(location + " Miss!");
+            console.log("You must finalize positions first!");
         }
     }
     //Auto generate an ID for the ship
