@@ -409,23 +409,25 @@ class Ship {
     }
 
     static finalizeLocations(){
-        Ship.playerShips.forEach(function(ship) {
-            ship.element.removeEventListener('mousedown', ship.shipMouseDown, false);
-            ship.element.removeEventListener('mouseup', ship.shipMouseUp, false);
-            let splitLoc = [ship.lastLocation.slice(0,1),ship.lastLocation.slice(1)];
-            let headY = splitLoc[0].toUpperCase().charCodeAt(0)-64;
-            let headX = splitLoc[1];
-            for (let i = 0; i < ship.length; i++) {
-                if (ship.direction) {
-                    playerBoardArray[headY + i][headX] = ship.id;
-                    ship.liveBlocks.push("" + String.fromCharCode(headY + i + 64) + headX);
-                } else {
-                    playerBoardArray[headY][headX + i] = ship.id;
-                    ship.liveBlocks.push("" + String.fromCharCode(headY + 64) + (headX + i));
+        if(!positionsFinalized) {
+            Ship.playerShips.forEach(function (ship) {
+                ship.element.removeEventListener('mousedown', ship.shipMouseDown, false);
+                ship.element.removeEventListener('mouseup', ship.shipMouseUp, false);
+                let splitLoc = [ship.lastLocation.slice(0, 1), ship.lastLocation.slice(1)];
+                let headY = splitLoc[0].toUpperCase().charCodeAt(0) - 64;
+                let headX = splitLoc[1];
+                for (let i = 0; i < ship.length; i++) {
+                    if (ship.direction) {
+                        playerBoardArray[headY + i][headX] = ship.id;
+                        ship.liveBlocks.push("" + String.fromCharCode(headY + i + 64) + headX);
+                    } else {
+                        playerBoardArray[headY][headX + i] = ship.id;
+                        ship.liveBlocks.push("" + String.fromCharCode(headY + 64) + (headX + i));
+                    }
                 }
-            }
-        });
-        positionsFinalized = true;
+            });
+            positionsFinalized = true;
+        }
     }
     static generatePlayer() {
         let requestedShips = [

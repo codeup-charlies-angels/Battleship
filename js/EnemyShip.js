@@ -91,6 +91,7 @@ class EnemyShip {
             this.live=false;
             //EnemyShip.enemyShips.splice(EnemyShip.enemyShips.indexOf(this), 1);
             // Ship.playerShips[this.id].element.style.backgroundColor="red";
+            EnemyShip.lastFire = false;
             return "You sunk my "+this.type+"!";
         }else{
             return "Hit!";
@@ -135,14 +136,16 @@ class EnemyShip {
         });
         return isLive;
     }
+    static lastFire=false;
     static fire(){
         if (positionsFinalized) {
-            let location = p2Firing(false);
+            let location = p2Firing(EnemyShip.lastFire);
             document.getElementById(location).style.backgroundColor = "orange";
             let splitLoc = [location.slice(0, 1), location.slice(1)];
             let fireY = splitLoc[0].toUpperCase().charCodeAt(0) - 64;
             let fireX = splitLoc[1];
             if (playerBoardArray[fireY][fireX] !== null && playerBoardArray[fireY][fireX] !== undefined) {
+                EnemyShip.lastFire = true;
                 var fire = Ship.playerShips[playerBoardArray[fireY][fireX]].hit(location);
                 console.log(fire);
                 playerBoardArray[fireY][fireX] = null;
@@ -153,6 +156,7 @@ class EnemyShip {
                 }
 
             } else {
+                EnemyShip.lastFire=false;
                 console.log("Miss!");
             }
         }else{
