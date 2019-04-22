@@ -339,7 +339,6 @@ var lastcoord = '';
 function p2Firing(hit) {
     var coord;
     var attempts=0;
-    // if hit is false, select a random coord to fire on.
     do{
         if(hit && attempts < 10){
             let splitLoc = [lastcoord.slice(0, 1), lastcoord.slice(1)];
