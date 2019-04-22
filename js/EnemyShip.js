@@ -152,6 +152,9 @@ class EnemyShip {
                 if(Ship.checkLive()) {
                     return true;
                 }else{
+                    gameWon=false;
+                    gameActive=false;
+                    handleGameOver();
                     console.log("You lose!")
                 }
 
