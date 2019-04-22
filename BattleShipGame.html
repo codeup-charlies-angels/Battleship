@@ -6,38 +6,164 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!--notest-->
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"-->
+    <!--integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">-->
     <link rel="stylesheet" href="css/style.css">
     <title>JS BattleShip!</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .top-test {
+            height: 23%;
+            width: 100%;
+            margin-bottom: 5%;
+        }
+
+        .right-test {
+            width: auto;
+            background: orange;
+        }
+
+        .left-test {
+            height: 100vh;
+            padding-right: 20%;
+            margin-right: 10%;
+            width: auto;
+            color: white;
+        }
+
+        .main {
+            display: flex;
+        }
+
+    </style>
+
 </head>
 <body onresize="resizeEverything()">
-<div id="GameBoardContainer">
 
+<div class="top-test">
+    <img src="gamelogo.png" id="logoTop" class="img-fluid" alt="Logo">
 </div>
-<div id="GameBoardContainer2">
 
+
+<div class="main">
+    <div class="left-test">
+        <div class="scoreBoardPlayer1">
+            <h2 class="playerSide">Player 1</h2>
+            <table class="table ">
+                <tbody>
+                <tr id="battleship1">
+                    <td width="170px"><strong>BATTLESHIP</strong></td>
+                    <td class="battleshipPlayer1"><img src="ShipLG.png" alt="Battleship Pic" height="150rem"
+                                                       width="40rem" style="transform:rotate(-90deg);"></td>
+                </tr>
+                <tr id="cruiser1">
+                    <td width="170px"><strong>CRUISER</strong></td>
+                    <td class="cruiser1Player1"><img src="Cruiser.png" alt="Cruiser Pic" height="100rem" width="30rem"
+                                                     style="transform:rotate(-90deg);"></td>
+                    <!--<td class="cruiser2Player1"><img src="Cruiser.png" alt="Cruiser Pic" height="100rem" width="30rem"-->
+                                                     <!--style="transform:rotate(-90deg);"></td>-->
+                </tr>
+                <tr id="destroyer1">
+                    <td width="170px"><strong>DESTROYER</strong></td>
+                    <td class="destroyer1Player1"><img src="Destroyer.png" alt="Destroyer Pic" height="80rem"
+                                                       width="30rem" style="transform:rotate(-90deg);"></td>
+                    <!--<td class="destroyer2Player1"><img src="Destroyer.png" alt="Destroyer Pic" height="80rem"-->
+                                                       <!--width="30rem" style="transform:rotate(-90deg);"></td>-->
+                    <!--<td class="destroyer3Player1"><img src="Destroyer.png" alt="Destroyer Pic" height="80rem"-->
+                                                       <!--width="30rem" style="transform:rotate(-90deg);"></td>-->
+                </tr>
+                <tr id="submarine1">
+                    <td width="170px"><strong>SUBMARINE</strong></td>
+                    <td class="submarine1Player1"><img src="Submarine.png" alt="Submarine Pic" height="80rem"
+                                                       width="30rem" style="transform:rotate(-90deg);"></td>
+                    <!--<td class="submarine2Player1"><img src="Submarine.png" alt="Submarine Pic" height="80rem"-->
+                                                       <!--width="30rem" style="transform:rotate(-90deg);"></td>-->
+                    <!--<td class="submarine3Player1"><img src="Submarine.png" alt="Submarine Pic" height="80rem"-->
+                                                       <!--width="30rem" style="transform:rotate(-90deg);"></td>-->
+                    <!--<td class="submarine4Player1"><img src="Submarine.png" alt="Submarine Pic" height="80rem"-->
+                                                       <!--width="30rem" style="transform:rotate(-90deg);"></td>-->
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="scoreBoardPlayer1">
+            <h2 class="playerSide">Player 2</h2>
+            <table class="table">
+                <tbody>
+                <tr id="battleship2">
+                    <td width="170px"><strong>BATTLESHIP</strong></td>
+                    <td class="battleshipPlayer1"><img src="ShipLG.png" alt="Battleship Pic" height="150rem"
+                                                       width="40rem" style="transform:rotate(-90deg);"></td>
+                </tr>
+                <tr id="cruiser2">
+                    <td width="170px"><strong>CRUISER</strong></td>
+                    <td class="cruiser1Player1"><img src="Cruiser.png" alt="Cruiser Pic" height="100rem" width="30rem"
+                                                     style="transform:rotate(-90deg);"></td>
+                    <!--<td class="cruiser2Player1"><img src="Cruiser.png" alt="Cruiser Pic" height="100rem" width="30rem"-->
+                                                     <!--style="transform:rotate(-90deg);"></td>-->
+                </tr>
+                <tr id="destroyer2">
+                    <td width="170px"><strong>DESTROYER</strong></td>
+                    <td class="destroyer1Player1"><img src="Destroyer.png" alt="Destroyer Pic" height="80rem"
+                                                       width="30rem" style="transform:rotate(-90deg);"></td>
+                    <!--<td class="destroyer2Player1"><img src="Destroyer.png" alt="Destroyer Pic" height="80rem"-->
+                                                       <!--width="30rem" style="transform:rotate(-90deg);"></td>-->
+                    <!--<td class="destroyer3Player1"><img src="Destroyer.png" alt="Destroyer Pic" height="80rem"-->
+                                                       <!--width="30rem" style="transform:rotate(-90deg);"></td>-->
+                </tr>
+                <tr id="submarine2">
+                    <td width="170px"><strong>SUBMARINE</strong></td>
+                    <td class="submarine1Player1"><img src="Submarine.png" alt="Submarine Pic" height="80rem"
+                                                       width="30rem" style="transform:rotate(-90deg);"></td>
+                    <!--<td class="submarine2Player1"><img src="Submarine.png" alt="Submarine Pic" height="80rem"-->
+                                                       <!--width="30rem" style="transform:rotate(-90deg);"></td>-->
+                    <!--<td class="submarine3Player1"><img src="Submarine.png" alt="Submarine Pic" height="80rem"-->
+                                                       <!--width="30rem" style="transform:rotate(-90deg);"></td>-->
+                    <!--<td class="submarine4Player1"><img src="Submarine.png" alt="Submarine Pic" height="80rem"-->
+                                                       <!--width="30rem" style="transform:rotate(-90deg);"></td>-->
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <!--===================-->
+    <div class="right-test">
+        <div id="GameBoardContainer" class="boardOne">
+
+        </div>
+    </div>
 </div>
+<!--===================-->
+
+
+<!--</div>-->
+
+
 <!-- Optional JavaScript -->
 <script src="js/Battleship.js"></script>
-<script src="js/battle_p2_setup.js"></script>
-<script src="js/EnemyShip.js"></script>
+<!--<script src="js/battle_p2_setup.js"></script>-->
+<!--<script src="js/EnemyShip.js"></script>-->
 
 
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"-->
+<!--integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"-->
+<!--crossorigin="anonymous"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"-->
+<!--integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"-->
+<!--crossorigin="anonymous"></script>-->
+<!--<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"-->
+<!--integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"-->
+<!--crossorigin="anonymous"></script>-->
 </body>
 </html>
 
 
-<!--&lt;!&ndash;Top with score board and logo&ndash;&gt;-->
 
-<!--<nav class="gameTopBar mt-2">-->
-    <!--<a href="#logo"> <img src="gamelogo.png" alt="Logo" height="200rem" width="450rem" id="logoTop"></a>-->
-    <!--<br>-->
-    <!--<a href="#player" class="active playerSide">Player</a>-->
-    <!--<a href="#Opp" class="oppSide">Opponent</a>-->
-
-<!--</nav>-->
 

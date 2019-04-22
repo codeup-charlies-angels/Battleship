@@ -1,46 +1,78 @@
-/**{*/
-    /*box-sizing:border-box;*/
-/*}*/
-/*body{*/
-    /*display: table;*/
-    /*position: absolute;*/
-    /*top: 0;*/
-    /*left: 0;*/
-    /*height: 100%;*/
-    /*width: 100%;*/
-    /*background-color: lightslategray;*/
-/*}*/
-/*.gameTopBar {*/
-    /*overflow: hidden;*/
-    /*position: absolute;*/
-    /*width: 100%;*/
-    /*text-align: center;*/
-/*}*/
 
-/*.gameTopBar a {*/
-    /*display: block;*/
-    /*color: black;*/
-    /*text-decoration: none;*/
-    /*font-size: 2rem;*/
-/*}*/
+#logoTop{
+    display: block;
+    width: 100%;
+    height: 15rem;
+    margin: 0;
+    border-bottom: 5px solid black;
+}
+.playerSide{
+    font-size: 2rem;
+    margin-left: 2rem;
+    border-bottom: 2px black solid;
+}
+.battleshipPlayer1{
+    display: inline-block;
+    position: absolute;
+    margin-top: -60px;
+}
+#battleship1{
 
-/*#logoTop{*/
-    /*display: block;*/
-    /*width: 100%;*/
-    /*margin: 0;*/
-    /*border-bottom: 5px solid black;*/
-/*}*/
-/*.playerSide{*/
-    /*float: left;*/
-    /*margin-left: 2rem;*/
-    /*border-bottom: 2px black solid;*/
-/*}*/
-/*.oppSide{*/
-    /*float: right;*/
-    /*margin-right: 2rem;*/
-    /*border-bottom: 2px black solid;*/
-/*}*/
-
+}
+.cruiser1Player1 {
+    display: inline-block;
+    position: absolute;
+    margin-top: -30px;
+    margin-left: -15px;
+}
+.cruiser2Player1{
+    display: inline-block;
+    position: absolute;
+    margin-top: -30px;
+    margin-left: 85px;
+}
+.destroyer1Player1 {
+    display: inline-block;
+    position: absolute;
+    margin-top: -18px;
+    margin-left: -25px;
+}
+.destroyer2Player1{
+    display: inline-block;
+    position: absolute;
+    margin-top: -18px;
+    margin-left: 55px;
+}
+.destroyer3Player1{
+    display: inline-block;
+    position: absolute;
+    margin-top: -18px;
+    margin-left: 135px;
+}
+.submarine1Player1 {
+    display: inline-block;
+    position: absolute;
+    margin-top: -20px;
+    margin-left: -30px;
+}
+.submarine2Player1{
+    display: inline-block;
+    position: absolute;
+    margin-top: -20px;
+    margin-left: 30px;
+}
+.submarine3Player1{
+    display: inline-block;
+    position: absolute;
+    margin-top: -20px;
+    margin-left: 90px;
+}
+.submarine4Player1{
+    display: inline-block;
+    position: absolute;
+    margin-top: -20px;
+    margin-left: 150px;
+}
 
 /*!*------------------*!*/
 /*!*.gameTopBar a:hover {*!*/
@@ -116,6 +148,7 @@ body{
     height: 100%;
     width: 100%;
     user-select: none;
+    background-color: lightslategray;
 }
 
 #GameBoardContainer {
@@ -138,7 +171,7 @@ body{
 .GamePiece_Ship{
     z-index:100;
     position:absolute;
-    background-color:lightgreen;
+    background-color:grey;
     text-align:center;
     touch-action: none;
     user-select: none;
@@ -150,9 +183,9 @@ body{
     border:1px solid black;
 }
 .gameGridBox{
-    background-color:royalblue;
+    background-color:lightseagreen;
 }
 .organizerGridBox{
-    background-color: greenyellow;
+    background-color: whitesmoke;
     text-align:center;
 }
