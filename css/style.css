@@ -1,21 +1,43 @@
+
+#logoTop{
+    display: block;
+    background-color: black;
+    width: 100%;
+    height: 12rem;
+    margin-right: auto;
+    margin-left: auto;
+    border-bottom: 2px solid black;
+}
+
 *{
     box-sizing:border-box;
 }
 body{
     display: table;
     position: absolute;
+    margin: 0;
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
     user-select: none;
-}
+    background-color: lightslategray;
 
+}
 #GameBoardContainer {
     display: table-cell;
     vertical-align: middle;
     touch-action: none;
 }
+
+/*<<<<<<< HEAD*/
+        /*#GameBoardContainer2 {*/
+            /*display: table-cell;*/
+            /*vertical-align: middle;*/
+            /*touch-action: none;*/
+        /*}*/
+/*=======*/
+/*>>>>>>> f8913e4907aedad2196656863009aa09170d2cdb*/
 
 #PlayerGameBoard {
     margin-left: auto;
@@ -26,8 +48,8 @@ body{
 .GamePiece_Ship{
     z-index:100;
     position:absolute;
-    /*background-color:lightgreen;*/
-    text-align:center;
+
+text-align:center;
     touch-action: none;
     user-select: none;
     /*transition:all 0.5s ease;*/
@@ -38,9 +60,16 @@ body{
     border:1px solid black;
 }
 .gameGridBox{
-    background-color:royalblue;
+    background-color:lightseagreen;
+}
+.enemyGridBox{
+    background-color:mediumvioletred;
 }
 .organizerGridBox{
-    background-color: greenyellow;
+    background-color: whitesmoke;
     text-align:center;
+}
+#battleshipsName{
+    margin-left: auto;
+    margin-right: auto;
 }

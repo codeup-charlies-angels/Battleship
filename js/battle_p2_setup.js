@@ -327,6 +327,51 @@ p2Ships.forEach(p2BoardSetup);
 
 //********************************* p2 board setup complete *************************//
 
+let EnemyGameBoard;
+let GameBoardContainer2;
+let enemyGameBoardArray=createArray(gameBoardSizeX+1,gameBoardSizeY+1);
+
+function initializeGameBoard2(){
+    // Create the gameBoard div
+    EnemyGameBoard=document.createElement("div");   // Create a <button> element;
+    EnemyGameBoard.id = "EnemyGameBoard";
+    GameBoardContainer2=document.getElementById("GameBoardContainer2");
+    GameBoardContainer2.appendChild(EnemyGameBoard);
+    console.log("test");
+    rect = EnemyGameBoard.getBoundingClientRect();
+    gbLeft = rect.left + window.scrollX;
+    gbTop = rect.top + window.scrollY;
+    EnemyGameBoard.style.width=(gameBoardSizeY+1)*gameScale+"px";
+    EnemyGameBoard.style.height=(gameBoardSizeX+1)*gameScale+"px";
+
+
+    for(let y=0;y<gameBoardSizeY+1;y++){
+        for (let x=0;x<gameBoardSizeX+1;x++){
+            let gridBox = document.createElement("div");
+            gridBox.style.width = gameScale+"px";
+            gridBox.style.height = gameScale+"px";
+            if (y===0 || x===0){
+                gridBox.className = "organizerGridBox";
+                if (y===0 && x!==0){
+                    gridBox.textContent=""+x;
+                }
+                if (x===0 && y!==0){
+                    gridBox.textContent=""+String.fromCharCode(y + 64);
+                }
+                if (y===0&&x===0){
+                    gridBox.style.backgroundColor="orange";
+                }
+            }else {
+                gridBox.id = "" + String.fromCharCode(y + 64) + x;
+                gridBox.className = "enemyGridBox";
+            }
+            enemyGameBoardArray[x][y] = gridBox;
+            EnemyGameBoard.appendChild(gridBox);
+        }
+    }
+}
+initializeGameBoard2();
+
 //********************************* p2 firing mechanism *****************************//
 
 var hit= false;

@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/mykal.css">
+    <title>JS BattleShip!</title>
+</head>
+<body>
+<div id="main">
+    <div class="board">
+        <div class="displays">
+            <div class="top">
+                <div class="gamepiece1"></div>
+                <div id="GameBoardContainer" class="container">
+                    <div class="row">
+                        <div id="GameBoard1" class="col my-auto mx-auto">
+                            <div id="RowA" class="row">
+                                <div id="A1" class="col mx-auto">1</div>
+                                <div id="A2" class="col mx-auto">2</div>
+                                <div id="A3" class="col mx-auto">3</div>
+                                <div id="A4" class="col mx-auto">4</div>
+                                <div id="A5" class="col mx-auto">5</div>
+                                <div id="A6" class="col mx-auto">6</div>
+                                <div id="A7" class="col mx-auto">7</div>
+                                <div id="A8" class="col mx-auto">8</div>
+                                <div id="A9" class="col mx-auto">9</div>
+                                <div id="A10" class="col mx-auto">10</div>
+                            </div>
+                            <div id="RowB" class="row">
+                                <div id="B1" class="col mx-auto">1</div>
+                                <div id="B2" class="col mx-auto">2</div>
+                                <div id="B3" class="col mx-auto">3</div>
+                                <div id="B4" class="col mx-auto">4</div>
+                                <div id="B5" class="col mx-auto">5</div>
+                                <div id="B6" class="col mx-auto">6</div>
+                                <div id="B7" class="col mx-auto">7</div>
+                                <div id="B8" class="col mx-auto">8</div>
+                                <div id="B9" class="col mx-auto">9</div>
+                                <div id="B10" class="col mx-auto">10</div>
+                            </div>
+
+                            <div id="RowC" class="row">
+                                <div id="C1" class="col mx-auto">1</div>
+                                <div id="C2" class="col mx-auto">2</div>
+                                <div id="C3" class="col mx-auto">3</div>
+                                <div id="C4" class="col mx-auto">4</div>
+                                <div id="C5" class="col mx-auto">5</div>
+                                <div id="C6" class="col mx-auto">6</div>
+                                <div id="C7" class="col mx-auto">7</div>
+                                <div id="C8" class="col mx-auto">8</div>
+                                <div id="C9" class="col mx-auto">9</div>
+                                <div id="C10" class="col mx-auto">10</div>
+                            </div>
+
+                            <div id="RowD" class="row">
+                                <div id="D1" class="col mx-auto">1</div>
+                                <div id="D2" class="col mx-auto">2</div>
+                                <div id="D3" class="col mx-auto">3</div>
+                                <div id="D4" class="col mx-auto">4</div>
+                                <div id="D5" class="col mx-auto">5</div>
+                                <div id="D6" class="col mx-auto">6</div>
+                                <div id="D7" class="col mx-auto">7</div>
+                                <div id="D8" class="col mx-auto">8</div>
+                                <div id="D9" class="col mx-auto">9</div>
+                                <div id="D10" class="col mx-auto">10</div>
+                            </div>
+
+                            <div id="RowE" class="row">
+                                <div id="E1" class="col mx-auto">1</div>
+                                <div id="E2" class="col mx-auto">2</div>
+                                <div id="E3" class="col mx-auto">3</div>
+                                <div id="E4" class="col mx-auto">4</div>
+                                <div id="E5" class="col mx-auto">5</div>
+                                <div id="E6" class="col mx-auto">6</div>
+                                <div id="E7" class="col mx-auto">7</div>
+                                <div id="E8" class="col mx-auto">8</div>
+                                <div id="E9" class="col mx-auto">9</div>
+                                <div id="E10" class="col mx-auto">10</div>
+                            </div>
+
+                            <div id="RowF" class="row">
+                                <div id="F1" class="col mx-auto">1</div>
+                                <div id="F2" class="col mx-auto">2</div>
+                                <div id="F3" class="col mx-auto">3</div>
+                                <div id="F4" class="col mx-auto">4</div>
+                                <div id="F5" class="col mx-auto">5</div>
+                                <div id="F6" class="col mx-auto">6</div>
+                                <div id="F7" class="col mx-auto">7</div>
+                                <div id="F8" class="col mx-auto">8</div>
+                                <div id="F9" class="col mx-auto">9</div>
+                                <div id="F10" class="col mx-auto">10</div>
+                            </div>
+
+                            <div id="RowG" class="row">
+                                <div id="G1" class="col mx-auto">1</div>
+                                <div id="G2" class="col mx-auto">2</div>
+                                <div id="G3" class="col mx-auto">3</div>
+                                <div id="G4" class="col mx-auto">4</div>
+                                <div id="G5" class="col mx-auto">5</div>
+                                <div id="G6" class="col mx-auto">6</div>
+                                <div id="G7" class="col mx-auto">7</div>
+                                <div id="G8" class="col mx-auto">8</div>
+                                <div id="G9" class="col mx-auto">9</div>
+                                <div id="G10" class="col mx-auto">10</div>
+                            </div>
+
+                            <div id="RowH" class="row">
+                                <div id="H1" class="col mx-auto">1</div>
+                                <div id="H2" class="col mx-auto">2</div>
+                                <div id="H3" class="col mx-auto">3</div>
+                                <div id="H4" class="col mx-auto">4</div>
+                                <div id="H5" class="col mx-auto">5</div>
+                                <div id="H6" class="col mx-auto">6</div>
+                                <div id="H7" class="col mx-auto">7</div>
+                                <div id="H8" class="col mx-auto">8</div>
+                                <div id="H9" class="col mx-auto">9</div>
+                                <div id="H10" class="col mx-auto">10</div>
+                            </div>
+
+                            <div id="RowI" class="row">
+                                <div id="I1" class="col mx-auto">1</div>
+                                <div id="I2" class="col mx-auto">2</div>
+                                <div id="I3" class="col mx-auto">3</div>
+                                <div id="I4" class="col mx-auto">4</div>
+                                <div id="I5" class="col mx-auto">5</div>
+                                <div id="I6" class="col mx-auto">6</div>
+                                <div id="I7" class="col mx-auto">7</div>
+                                <div id="I8" class="col mx-auto">8</div>
+                                <div id="I9" class="col mx-auto">9</div>
+                                <div id="I10" class="col mx-auto">10</div>
+                            </div>
+
+                            <div id="RowJ" class="row">
+                                <div id="J1" class="col mx-auto">1</div>
+                                <div id="J2" class="col mx-auto">2</div>
+                                <div id="J3" class="col mx-auto">3</div>
+                                <div id="J4" class="col mx-auto">4</div>
+                                <div id="J5" class="col mx-auto">5</div>
+                                <div id="J6" class="col mx-auto">6</div>
+                                <div id="J7" class="col mx-auto">7</div>
+                                <div id="J8" class="col mx-auto">8</div>
+                                <div id="J9" class="col mx-auto">9</div>
+                                <div id="J10" class="col mx-auto">10</div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom">
+                    div id="GameBoardContainer" class="container">
+                    <div class="row">
+                        <div id="GameBoard" class="col my-auto mx-auto">
+                            <div id="RowA2" class="row">
+                                <div id="Aa1" class="col mx-auto">1</div>
+                                <div id="Aa2" class="col mx-auto">2</div>
+                                <div id="Aa3" class="col mx-auto">3</div>
+                                <div id="Aa4" class="col mx-auto">4</div>
+                                <div id="Aa5" class="col mx-auto">5</div>
+                                <div id="Aa6" class="col mx-auto">6</div>
+                                <div id="Aa7" class="col mx-auto">7</div>
+                                <div id="Aa8" class="col mx-auto">8</div>
+                                <div id="Aa9" class="col mx-auto">9</div>
+                                <div id="Aa10" class="col mx-auto">10</div>
+                            </div>
+                            <div id="RowB2" class="row">
+                                <div id="Bb1" class="col mx-auto">1</div>
+                                <div id="Bb2" class="col mx-auto">2</div>
+                                <div id="Bb3" class="col mx-auto">3</div>
+                                <div id="Bb4" class="col mx-auto">4</div>
+                                <div id="Bb5" class="col mx-auto">5</div>
+                                <div id="Bb6" class="col mx-auto">6</div>
+                                <div id="Bb7" class="col mx-auto">7</div>
+                                <div id="Bb8" class="col mx-auto">8</div>
+                                <div id="Bb9" class="col mx-auto">9</div>
+                                <div id="Bb10" class="col mx-auto">10</div>
+                            </div>
+
+                            <div id="RowC2" class="row">
+                                <div id="Cc1" class="col mx-auto">1</div>
+                                <div id="Cc2" class="col mx-auto">2</div>
+                                <div id="Cc3" class="col mx-auto">3</div>
+                                <div id="Cc4" class="col mx-auto">4</div>
+                                <div id="Cc5" class="col mx-auto">5</div>
+                                <div id="Cc6" class="col mx-auto">6</div>
+                                <div id="Cc7" class="col mx-auto">7</div>
+                                <div id="Cc8" class="col mx-auto">8</div>
+                                <div id="Cc9" class="col mx-auto">9</div>
+                                <div id="Cc10" class="col mx-auto">10</div>
+                            </div>
+
+                            <div id="RowD2" class="row">
+                                <div id="Dd1" class="col mx-auto">1</div>
+                                <div id="Dd2" class="col mx-auto">2</div>
+                                <div id="Dd3" class="col mx-auto">3</div>
+                                <div id="Dd4" class="col mx-auto">4</div>
+                                <div id="Dd5" class="col mx-auto">5</div>
+                                <div id="Dd6" class="col mx-auto">6</div>
+                                <div id="Dd7" class="col mx-auto">7</div>
+                                <div id="Dd8" class="col mx-auto">8</div>
+                                <div id="Dd9" class="col mx-auto">9</div>
+                                <div id="Dd10" class="col mx-auto">10</div>
+                            </div>
+
+                            <div id="RowE2" class="row">
+                                <div id="Ee1" class="col mx-auto">1</div>
+                                <div id="Ee2" class="col mx-auto">2</div>
+                                <div id="Ee3" class="col mx-auto">3</div>
+                                <div id="Ee4" class="col mx-auto">4</div>
+                                <div id="Ee5" class="col mx-auto">5</div>
+                                <div id="Ee6" class="col mx-auto">6</div>
+                                <div id="Ee7" class="col mx-auto">7</div>
+                                <div id="Ee8" class="col mx-auto">8</div>
+                                <div id="Ee9" class="col mx-auto">9</div>
+                                <div id="Ee10" class="col mx-auto">10</div>
+                            </div>
+
+                            <div id="RowF2" class="row">
+                                <div id="Ff1" class="col mx-auto">1</div>
+                                <div id="Ff2" class="col mx-auto">2</div>
+                                <div id="Ff3" class="col mx-auto">3</div>
+                                <div id="Ff4" class="col mx-auto">4</div>
+                                <div id="Ff5" class="col mx-auto">5</div>
+                                <div id="Ff6" class="col mx-auto">6</div>
+                                <div id="Ff7" class="col mx-auto">7</div>
+                                <div id="Ff8" class="col mx-auto">8</div>
+                                <div id="Ff9" class="col mx-auto">9</div>
+                                <div id="Ff10" class="col mx-auto">10</div>
+                            </div>
+
+                            <div id="RowG2" class="row">
+                                <div id="Gg1" class="col mx-auto">1</div>
+                                <div id="Gg2" class="col mx-auto">2</div>
+                                <div id="Gg3" class="col mx-auto">3</div>
+                                <div id="Gg4" class="col mx-auto">4</div>
+                                <div id="Gg5" class="col mx-auto">5</div>
+                                <div id="Gg6" class="col mx-auto">6</div>
+                                <div id="Gg7" class="col mx-auto">7</div>
+                                <div id="Gg8" class="col mx-auto">8</div>
+                                <div id="Gg9" class="col mx-auto">9</div>
+                                <div id="Gg10" class="col mx-auto">10</div>
+                            </div>
+
+                            <div id="RowH2" class="row">
+                                <div id="Hh1" class="col mx-auto">1</div>
+                                <div id="Hh2" class="col mx-auto">2</div>
+                                <div id="Hh3" class="col mx-auto">3</div>
+                                <div id="Hh4" class="col mx-auto">4</div>
+                                <div id="Hh5" class="col mx-auto">5</div>
+                                <div id="Hh6" class="col mx-auto">6</div>
+                                <div id="Hh7" class="col mx-auto">7</div>
+                                <div id="Hh8" class="col mx-auto">8</div>
+                                <div id="Hh9" class="col mx-auto">9</div>
+                                <div id="Hh10" class="col mx-auto">10</div>
+                            </div>
+
+                            <div id="RowI2" class="row">
+                                <div id="Ii1" class="col mx-auto">1</div>
+                                <div id="Ii2" class="col mx-auto">2</div>
+                                <div id="Ii3" class="col mx-auto">3</div>
+                                <div id="Ii4" class="col mx-auto">4</div>
+                                <div id="Ii5" class="col mx-auto">5</div>
+                                <div id="Ii6" class="col mx-auto">6</div>
+                                <div id="Ii7" class="col mx-auto">7</div>
+                                <div id="Ii8" class="col mx-auto">8</div>
+                                <div id="Ii9" class="col mx-auto">9</div>
+                                <div id="Ii10" class="col mx-auto">10</div>
+                            </div>
+
+                            <div id="RowJ2" class="row">
+                                <div id="Jj1" class="col mx-auto">1</div>
+                                <div id="Jj2" class="col mx-auto">2</div>
+                                <div id="Jj3" class="col mx-auto">3</div>
+                                <div id="Jj4" class="col mx-auto">4</div>
+                                <div id="Jj5" class="col mx-auto">5</div>
+                                <div id="Jj6" class="col mx-auto">6</div>
+                                <div id="Jj7" class="col mx-auto">7</div>
+                                <div id="Jj8" class="col mx-auto">8</div>
+                                <div id="Jj9" class="col mx-auto">9</div>
+                                <div id="Jj10" class="col mx-auto">10</div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel">
+        <div class="topPanel">
+            <div class="layout">
+                <div class='buttons one'>Not Sure Yet</div>
+                <div class='buttons two'>Not Sure Yet</div>
+                <div class='buttons three'>Not Sure Yet</div>
+            </div>
+        </div>
+        <div class='console'>
+            <span class='text'></span></div>
+    </div>
+</div>
+<br>
+<br>
+<!-- Optional JavaScript -->
+<script src="js/Battleship.js"></script>
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

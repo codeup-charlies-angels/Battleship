@@ -1,29 +1,95 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <!--notest-->
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <link rel="stylesheet" href="css/style.css">
-        <title>JS BattleShip!</title>
-    </head>
-    <body onresize="resizeEverything()">
-        <div id="GameBoardContainer">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--notest-->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <title>JS BattleShip!</title>
+</head>
+
+<body onresize="resizeEverything()">
+
+<!--====================-->
+
+<div class="top-test">
+    <img src="img/logoGame.png" id="logoTop" class="img-fluid" alt="Logo">
+</div>
+<!--====================-->
+
+
+<div class="main">
+
+    <!--====================-->
+    <div class="left-test">
+        <div class="scoreBoardPlayer1">
+            <table class="table ">
+                <tbody>
+                <tr id="battleshipsName">
+                    <td ><strong>BATTLESHIP</strong><br><img src="img/battleShip.png" alt="Battleship Pic" height="40px"
+                                                       width="120px" >
+                    </td>
+                    <td ><strong>CRUISER</strong><br><img src="img/cruiserShip.png" alt="Cruiser Pic" height="40px"
+                                                        width="90px" >
+                    </td>
+                    <td ><strong>DESTROYER</strong><br><img src="img/destroyerShip.png" alt="Destroyer Pic" height="40px"
+                                                            width="80px" >
+                    </td>
+                    <td ><strong>SUBMARINE</strong><br><img src="img/submarineShip.png" alt="Submarine Pic" height="40px"
+                                                            width="80px" >
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--========================-->
+
+
+    <!--===================-->
+    <div id="leftcont" class="right-test">
+        <div id="GameBoardContainer" class="boardOne">
 
         </div>
-        <!-- Optional JavaScript -->
-        <script src="//cdn.jsdelivr.net/pixastic/0.1.3/pixastic.all.js"></script>
-        <script src="js/Battleship.js"></script>
-        <script src="js/EnemyShip.js"></script>
-        <script src="js/handleGameOver.js"></script>
-        <script src="js/p2Targeting.js"></script>
+    </div>
+    <div id="rightcont" class="right-test">
+        <div id="GameBoardContainer2" class="boardTwo" style="background-color: white; height: 100px; width: 100px;">
 
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    </body>
+        </div>
+    </div>
+</div>
+<!--===================-->
+ <br>
+ <br>
+ <br>
+ <br>
+ <br>
+
+
+
+
+<!-- Optional JavaScript -->
+<script src="js/Battleship.js"></script>
+<script src="js/battle_p2_setup.js"></script>
+<script src="js/EnemyShip.js"></script>
+<script src="js/handleGameOver.js"></script>
+<script src="js/p2Targeting.js"></script>
+
+
+ <!--jQuery first, then Popper.js, then Bootstrap JS-->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+crossorigin="anonymous"></script>
+</body>
 </html>
